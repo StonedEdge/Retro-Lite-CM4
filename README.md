@@ -1,4 +1,4 @@
-# Retro Lite CM4 (Custom CM4 Gaming Handheld, based on the CM4 compute module from the Raspberry Pi Foundation) 
+# Retro Lite CM4  
 ![Image of Retro Lite CM4](https://i.imgur.com/h1mcu5v.jpg)
 
 ## Description
