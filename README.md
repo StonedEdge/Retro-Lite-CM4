@@ -29,6 +29,6 @@ Total BoM to build the Retro Lite CM4 exceeds $250 USD.
 ### Contributors 
 I'd like to thank these people in no particular order for the awesome work you have done to help me complete this project. 
 
-* Dmcke5 for helping me re-model the WiiSPii for CNC machining, CNC machining the case out of acrylic and of course the hours and hours of phone calls back and forth over the past few months. Thanks for putting up with my numerous questions on CNC
+* Dmcke5 for designing the case assets, including machining our prototypes, code and much more. Wouldn't have been possible to complete this without you 
 * YveltalGriffin for suggesting various hardware changes and reviews to PCB/schematics, as well as generally being open and willing to help 
 * Juckett D, for creating the Aegis CM4 and offering tips and tricks along the way. Check out his work here: https://github.com/juckettd
