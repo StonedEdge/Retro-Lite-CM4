@@ -25,8 +25,8 @@ void setup() {
 
 void loop() {
   powerButtonDebounce(); //Constantly read button and assign powerBtnState its correct value/debounce button 
-  if (!shutdownInit) { //Initailized to 0 on first boot, run on first passthrough initially. Else, set btnTimerStarted=false. 
-    if (powerBtnState) { //If button has been pressed, then run powerTimerCheck function, else run shutdownTimer();
+  if (!shutdownInit) { //Initailized to 0 on first boot, run on first passthrough initially. Else, run shutdownTimer(); 
+    if (powerBtnState) { //If button has been pressed, then run powerTimerCheck function, else set btnTimerStarted=false 
       powerTimerCheck(); 
     } else {
       btnTimerStarted = false;
