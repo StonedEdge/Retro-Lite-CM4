@@ -1,8 +1,16 @@
+#define SDA_PIN 6 
+#define SDA_PORT PORTA
+#define SCL_PIN 4 
+#define SCL_PORT PORTA
+#include <avr/io.h>
+#include <SoftI2CMaster.h>
+
 byte power_btn = 8; //Power button connected to this pin. Low Active
 byte sys_on = 1; //Regulator power. Active High
 byte sht_dwn = 2; //Connected to GPIO25. Signal to start Pi Shutdown. Active High
 byte low_volt_shutdown = 0; //Connected to GPIO16 on pi. Used for low voltage shut down
 
+byte BQ24292i_ADDRESS = 0xD6; 
 byte powerBtnState;
 byte systemState = 0; //Low Power Off
 bool shutdownInit = false;
@@ -17,6 +25,8 @@ bool shutDownTimerStarted = false;
 
 void setup() {
   //Serial.begin(9600);
+  i2c_init();
+  BQ_INIT(); 
   pinMode(power_btn, INPUT_PULLUP);
   pinMode(sys_on, OUTPUT);
   pinMode(sht_dwn, OUTPUT);
