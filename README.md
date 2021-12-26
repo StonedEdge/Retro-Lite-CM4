@@ -5,6 +5,7 @@
 The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the BitBuilt forums. The console is powered by a 4000mAh Li-Po and is designed to run with RetroPie, Lakka or Batocera images from an SD card. 
 
 Click the link below to view the worklog of the Retro Lite CM4: 
+
 https://bitbuilt.net/forums/index.php?threads/retro-lite-cm4-a-stonededge-and-dmcke5-collaboration.3934/
 
 ### Code 
