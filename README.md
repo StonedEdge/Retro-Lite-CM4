@@ -1,4 +1,4 @@
-# Retro Lite CM4  
+# Retro Lite CM4: Raspberry Pi Gaming Handheld
 ![Image of Retro Lite CM4](https://i.imgur.com/h1mcu5v.jpg)
 
 ## Description
