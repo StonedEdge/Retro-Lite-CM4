@@ -35,7 +35,7 @@ void loop() {
     shutdownTimer();
   }
 
-  if (low_volt_shutdown == HIGH) {
+  if (low_volt_shutdown == 1) {
     shutdownTimer();
   }
 
