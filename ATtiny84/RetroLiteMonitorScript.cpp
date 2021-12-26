@@ -111,7 +111,7 @@ void BQ_Write(uint8_t address, uint8_t reg, const uint8_t message) {
   return(data);
  }
 
-// BQ24292i Register Configuration
+// BQ24292i Register Configuration. To be cleaned. 
 //
 //// REG00
 //const uint8_t EN_HIZ = 0;
@@ -151,7 +151,7 @@ void BQ_Write(uint8_t address, uint8_t reg, const uint8_t message) {
 
 uint8_t REG00_config = 0b01111111;
 uint8_t REG01_config = 0b00010001;
-uint8_t REG02_config = 0b01000000;
+uint8_t REG02_config = 0b01000000; //2A Charge Current. Do not alter for Retro Lite CM4 cell. 
 uint8_t REG04_config = 0b10110000;
 uint8_t REG05_config = 0b10001010;
 uint8_t REG06_config = 0b00000001;
