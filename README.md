@@ -48,6 +48,7 @@ d) sudo apt-get install libpng12-dev - install the libpng library
 e) cd /home/pi/RetroliteOSD sudo make - compile the Retro Lite CM4 C script
 
 f) Navigate to the /etc directory and add the below lines to allow the code to run in perpetuity 
+
 cd /home/pi/RetroliteOSD
 sudo ./retrolite &
 sudo ./hdmi_script.sh & 
