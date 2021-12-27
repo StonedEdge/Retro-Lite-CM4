@@ -90,5 +90,5 @@ I'd like to thank these people in no particular order for the awesome work you h
 
 * Dmcke5 for designing the case assets, including machining our prototypes, code and much more. Wouldn't have been possible to complete this without you 
 * Gmanmodz for always being an inspiration for me to get into building handhelds and the modding scene 
-* YveltalGriffin for suggesting various hardware changes and reviews to PCB/schematics, as well as generally being open and willing to help 
+* YveltalGriffin/Mackie, for suggesting various hardware changes and reviews to PCB/schematics. His help was invaluable in learning new things about PCB design
 * Juckett D, for creating the Aegis CM4 and offering tips and tricks along the way. Check out his work here: https://github.com/juckettd
