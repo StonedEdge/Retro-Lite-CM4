@@ -40,18 +40,18 @@ b) Install the WM8960 I2S audio amplifier script, by running the script here: ht
 
 c) Install the latest version of WiringPi here: https://github.com/StonedEdge/WiringPi
 
-d) sudo apt-get install libpng12-dev
+d) sudo apt-get install libpng12-dev - install the libpng library
 
-e) cd /home/pi/RetroliteOSD sudo make
+e) cd /home/pi/RetroliteOSD sudo make - compile the Retro Lite CM4 C script
 
-f) Navigate to the /etc directory and add the below lines: 
+f) Navigate to the /etc directory and add the below lines to allow the code to run in perpetuity 
 cd /home/pi/RetroliteOSD
 sudo ./retrolite &
 sudo ./hdmi_script.sh & 
 
-g) sudo reboot
+g) sudo reboot - Reboot to enable all changes 
 
-You should now have all the required software installed.
+You should now have all the required software installed for the Retro Lite CM4 to display battery SoC, charging status, WiFi status, bluetooth status and more. The Retro Lite CM4 automatically safely shuts itself down when the voltage of the batteries depletes to 3.1V. 
 
 ### CAD
 The CAD files for the Retro Lite CM4 are not available or open source at this stage. Please do not ask myself or Dmcke5 to release them yet, as we will not do so. There are plans to release the files at a later date. 
