@@ -7,7 +7,7 @@ The purpose of the ATtiny84 onboard micrcontroller is to perform 5 simple functi
 2) Safely shutdown the operating system via a push button 
 3) Safely shutdown the operating system when battery voltage depletes less than 3.1v to prevent undervoltage/prolong the battery lifespan
 4) Monitor the BQ24292i charging chip over i2c, including setting the correct parameters/registers for the Retro Lite CM4, like max charge current and voltage cutoffs
-5) Allow for time delays before perorming actions (i.e hold button 3 seconds for power off, 1 second power on. 10 second delay before regulators switched off, 30 second low voltage shutdown delay)
+5) Allow for specific time delays before performing actions (i.e hold button 3 seconds for power off, 1 second power on. 10 second delay before regulators switched off, 30 second low voltage shutdown delay) - adjustable via the powerOn, powerOff, and shutDown variables. 
 6) Set the CM4 to the lowest possible power down state by driving GLOBAN_EN low after software shutdown. 
 
 ### Install Instructions
