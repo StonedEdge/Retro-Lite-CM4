@@ -77,6 +77,8 @@ c) Retro Lite Controller PCB (Left)
 
 d) Retro Lite Button Daughterboard
 
+Gerbers to be ordered from your board house of choice will be uploaded at a later date.
+
 -------------------------------------------------------------------------------------------------------
 
 ### BOM (Bill of Materials) 
