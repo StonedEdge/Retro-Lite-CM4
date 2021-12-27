@@ -5,15 +5,14 @@ of the computers GPU. These include OpenMAX, Open GL ES(1 and 2) and OpenVG.
 The raspberrypi/firmware repository has short examples for these and other
 APIs. They can be found in /opt/vc/src/hello_pi/ on the Raspbian 'wheezy'
 image. Among these examples is a program called hello_dispmanx. It is a
-very small example of the Dispmanx windowing system. Apart from this:-
-
-https://github.com/raspberrypi/firmware/tree/master/opt/vc/src/hello_pi/hello_dispmanx
-
-example, there is very little documentation available for this API. There
+very small example of the Dispmanx windowing system. Apart from this example, 
+there is very little documentation available for this API. There
 are snippets of information on the Raspberry Pi forum, but I have not found
 a single place with detailed information on DispmanX.  Hopefully these
 programs can be used as a starting point for anyone wanting to make use of
 DispmanX.
+
+https://github.com/raspberrypi/firmware/tree/master/opt/vc/src/hello_pi/hello_dispmanx
 
 The programs demonstrate layers with the following types: 4BPP (4 bit
 indexed), 8BPP (8 bit indexed), RGB565 (16 bit), RGB888 (24 bit), RGBA16
