@@ -13,6 +13,7 @@ The purpose of the ATtiny84 onboard micrcontroller is to perform 5 simple functi
 ### Install Instructions
 
 The easiest way to flash the ATtiny84 is with an Arduino UNO set up as an ICSP (in-circuit serial programmer) directly from within the Arduino IDE.
+
 https://www.arduino.cc/en/software
 
 Please install the below ATtiny cores for Arduino IDE support and choose the internal 8Mhz clock at 5v when programming your ATtiny84. 
