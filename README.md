@@ -75,7 +75,7 @@ d) Retro Lite Button Daughterboard
 
 ### BOM (Bill of Materials) 
 Link to the BoM will be added at a later stage. 
-Total BoM to build the Retro Lite CM4 exceeds $250 USD. 
+Total BoM to build the Retro Lite CM4 exceeds $250 USD for a single unit. 
 
 ### Contributors 
 I'd like to thank these people in no particular order for the awesome work you have done to help me complete this project. 
