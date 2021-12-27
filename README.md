@@ -11,16 +11,17 @@ The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the Bit
 - 800 x 480 HDMI video output (HDMI0 - internal)
 - 1080p 60fps HDMI video output (HDMI1 - external)
 - Switched to a tempered glass screen protector instead of painted plastic, now is printed
-- Fuel gauge for accurate battery SoC monitoring
-- Custom software stack specific to the Retro Lite hardware
+- Fuel gauge for accurate battery SoC monitoring - MAX17055 
+- Custom software stack specific to the Retro Lite hardware (HUD)
 - Custom menu activated by pushing select + R3, which allows you to calibrate the sticks, see various things like CPU temp, bring up an on screen keyboard for input, and more
 - USB-C PD charging capabilities up to 15v (1C charge rate at 2A)
 - Stereo Audio Output
-- Headphone Jack
+- Headphone Jack with automatic switching
 - 4000mAh custom lipo, courtesy of Helder
-- Dual shoulder buttons (L, R, LZ, RZ)
-- Safe software/hardware shutdown to prevent corruption to the SD card
+- Dual stacked shoulder buttons (L, R, LZ, RZ)
+- Safe software/hardware shutdown to prevent corruption to the SD card data
 - USB 2.0 2-port downstream hub
+- External dock passthrough PCB with 4 port USB-hub
 
 Click the link below to view the worklog of the Retro Lite CM4: 
 
