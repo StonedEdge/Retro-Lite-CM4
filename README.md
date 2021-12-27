@@ -59,12 +59,14 @@ sudo ./hdmi_script.sh &
 
 g) sudo reboot - Reboot to enable all changes 
 
--------------------------------------------------------------------------------------------------------
-
 You should now have all the required software installed for the Retro Lite CM4 to display battery SoC, charging status, WiFi status, bluetooth status and more. The Retro Lite CM4 automatically safely shuts itself down when the voltage of the batteries depletes to 3.1V. 
+
+-------------------------------------------------------------------------------------------------------
 
 ### CAD
 The CAD files for the Retro Lite CM4 are not available or open source at this stage. Please do not ask myself or Dmcke5 to release them yet, as we will not do so. There are plans to release the files at a later date. 
+
+-------------------------------------------------------------------------------------------------------
 
 ### PCB
 The Retro Lite CM4 requires 4 custom designed PCBs to be installed, not including the CM4 carrier board. These include: 
@@ -77,13 +79,18 @@ c) Retro Lite Controller PCB (Left)
 
 d) Retro Lite Button Daughterboard
 
+-------------------------------------------------------------------------------------------------------
+
 ### BOM (Bill of Materials) 
 Link to the BoM will be added at a later stage. 
 Total BoM to build the Retro Lite CM4 exceeds $250 USD for a single unit. 
+
+-------------------------------------------------------------------------------------------------------
 
 ### Contributors 
 I'd like to thank these people in no particular order for the awesome work you have done to help me complete this project. 
 
 * Dmcke5 for designing the case assets, including machining our prototypes, code and much more. Wouldn't have been possible to complete this without you 
+* Gmanmodz for always being an inspiration for me to get into building handhelds and the modding scene 
 * YveltalGriffin for suggesting various hardware changes and reviews to PCB/schematics, as well as generally being open and willing to help 
 * Juckett D, for creating the Aegis CM4 and offering tips and tricks along the way. Check out his work here: https://github.com/juckettd
