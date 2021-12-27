@@ -4,6 +4,24 @@
 ## Description
 The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the BitBuilt forums. The console is powered by a 4000mAh Li-Po and is designed to run with various software images, including but not limited to RetroPie, Lakka or Batocera, directly from an SD card. The project was inspired by a Nintendo Switch Lite. 
 
+## Features
+- Raspberry Pi 4 SoC: Broadcom BCM2711 quad-core Cortex-A72 @ 1.5GHz (overclockable to 2.1GHz)
+- 2GB of LPDDR4-3200 SDRAM
+- 5.0GHz IEEE 802.11b/g/n/ac wireless, Bluetooth 5.0
+- 800 x 480 HDMI video output (HDMI0 - internal)
+- 1080p 60fps HDMI video output (HDMI1 - external)
+- Switched to a tempered glass screen protector instead of painted plastic, now is printed
+- Fuel gauge for accurate battery SoC monitoring
+- Custom software stack specific to the Retro Lite hardware
+- Custom menu activated by pushing select + R3, which allows you to calibrate the sticks, see various things like CPU temp, bring up an on screen keyboard for input, and more
+- USB-C PD charging capabilities up to 15v (1C charge rate at 2A)
+- Stereo Audio Output
+- Headphone Jack
+- 4000mAh custom lipo, courtesy of Helder
+- Dual shoulder buttons (L, R, LZ, RZ)
+- Safe software/hardware shutdown to prevent corruption to the SD card
+- USB 2.0 2-port downstream hub
+
 Click the link below to view the worklog of the Retro Lite CM4: 
 
 https://bitbuilt.net/forums/index.php?threads/retro-lite-cm4-a-stonededge-and-dmcke5-collaboration.3934/
