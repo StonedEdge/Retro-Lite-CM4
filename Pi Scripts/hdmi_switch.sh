@@ -12,7 +12,7 @@
 #. /lib/lsb/init-functions
 
 # HDMI Switcher - Retro Lite CM4 Handheld
-# Purpose: To switch between the internal HDMI0 driven screen and the external HDMI1 monitor, forcing 
+# Purpose: To switch between the internal HDMI0 driven screen and the external HDMI1 monitor. Switch off internal screen when hotplug detected. 
 # Created by: Benjamin Todd 
 # Date: 2021/12/17
 
