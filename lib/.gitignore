@@ -1,0 +1,25 @@
+# object files
+
+*.o
+
+# code
+
+core
+
+# programs
+
+game/game
+life/life
+mandelbrot/mandelbrot
+offscreen/pngresize
+pngview/pngview
+radar_sweep/radar_sweep
+radar_sweep_alpha/radar_sweep_alpha
+rgb_triangle/rgb_triangle
+spriteview/spriteview
+test_pattern/test_pattern
+worms/worms
+
+# other directories
+
+*_/
