@@ -1001,9 +1001,7 @@ void checkGPIO(){
     }
 }
 
-
-
-void fanControl(){
+void fanControl(){ //Currently unfinished - not working. 
     float systemp, millideg;
     FILE *thermal;
 
