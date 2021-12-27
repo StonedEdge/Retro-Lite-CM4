@@ -34,8 +34,6 @@ Code required to complete the handheld includes an ATtiny84 monitor script, whic
 
 To flash the software to the Retro Lite CM4, you can either download the latest RetroPie Retro Lite custom image, or follow the below steps to get up and running. Plan is to eventually put this into a single script. I have not currently tested our firmware on images other than RetroPie, however I assume other images should also work fine. 
 
--------------------------------------------------------------------------------------------------------
-
 a) Download the latest version of RetroPie for the Raspberry Pi 4/400 here (also compatible with CM4): 
 https://retropie.org.uk/download/ 
 
