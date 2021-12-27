@@ -1,5 +1,5 @@
-# Retro Lite CM4: Raspberry Pi Gaming Handheld
 ![Image of Retro Lite CM4](https://i.imgur.com/h1mcu5v.jpg)
+# Retro Lite CM4: Raspberry Pi Handheld
 
 ## Description
 The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the BitBuilt forums. The console is powered by a 4000mAh Li-Po and is designed to run with RetroPie, Lakka or Batocera images from an SD card. 
