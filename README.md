@@ -51,6 +51,7 @@ f) Navigate to the /etc directory and add the below lines to allow the code to r
 
 cd /home/pi/RetroliteOSD
 sudo ./retrolite &
+
 sudo ./hdmi_script.sh & 
 
 g) sudo reboot - Reboot to enable all changes 
