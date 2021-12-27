@@ -32,13 +32,26 @@ https://bitbuilt.net/forums/index.php?threads/retro-lite-cm4-a-stonededge-and-dm
 ### Code 
 Code required to complete the handheld includes an ATtiny84 monitor script, which can be flashed via the 1.27mm pitch 6 pin header on the main Retro Lite PCB with an Arduino or similar programmer. Code for the i2s audio amplifier, fuel gauge and OSD functionality can be compiled directly on the CM4 module from the command line. Current code is non-functional, however changes will be pushed shortly when the firmware has been fixed. 
 
-To flash the software to the Retro Lite CM4, you can either download the latest RetroPie Retro Lite custom image, or follow the below steps:
+To flash the software to the Retro Lite CM4, you can either download the latest RetroPie Retro Lite custom image, or follow the below steps to get up and running. Plan is to eventually put this into a single script. 
 
-a) XXX
-b) XXX
-c) XXX
-d) XXX
-e) XXX
+a) Download the latest version of RetroPie for the Raspberry Pi 4/400 here (also compatible with CM4): https://retropie.org.uk/download/ 
+
+b) Install the WM8960 I2S audio amplifier script, by running the script here: https://github.com/StonedEdge/seeed-voicecard
+
+c) Install the latest version of WiringPi here: https://github.com/StonedEdge/WiringPi
+
+d) sudo apt-get install libpng12-dev
+
+e) cd /home/pi/RetroliteOSD sudo make
+
+f) Navigate to the /etc directory and add the below lines: 
+cd /home/pi/RetroliteOSD
+sudo ./retrolite &
+sudo ./hdmi_script.sh & 
+
+g) sudo reboot
+
+You should now have all the required software installed.
 
 ### CAD
 The CAD files for the Retro Lite CM4 are not available or open source at this stage. Please do not ask myself or Dmcke5 to release them yet, as we will not do so. There are plans to release the files at a later date. 
