@@ -33,7 +33,7 @@ https://bitbuilt.net/forums/index.php?threads/retro-lite-cm4-a-stonededge-and-dm
 Code required to complete the handheld includes an ATtiny84 monitor script, which can be flashed via the 1.27mm pitch 6 pin header on the main Retro Lite PCB with an Arduino or similar. Code for the i2s audio amplifier, fuel gauge and OSD functionality can be compiled directly on the CM4 module from the command line. Current code is non-functional, however changes will be pushed shortly when the firmware has been fixed. 
 
 ### CAD
-The CAD files for the Retro Lite CM4 are not available or open source at this stage. Please do not ask myself or Dmcke5 to release them yet, as we will not do so. 
+The CAD files for the Retro Lite CM4 are not available or open source at this stage. Please do not ask myself or Dmcke5 to release them yet, as we will not do so. There are plans to release the files at a later date. 
 
 ### PCB
 The Retro Lite CM4 requires 4 custom designed PCBs to be installed, not including the CM4 carrier board. These include: 
