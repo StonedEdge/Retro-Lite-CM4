@@ -57,7 +57,7 @@ sudo ./hdmi_script.sh &
 
 g) sudo reboot - Reboot to enable all changes 
 
-You should now have all the required software installed for the Retro Lite CM4 to display battery SoC, charging status, WiFi status, bluetooth status and more. The Retro Lite CM4 automatically safely shuts itself down when the voltage of the batteries depletes to 3.1V. 
+You should now have all the required software installed for the Retro Lite CM4 to display battery SoC, charging status, WiFi status, bluetooth status and more. The Retro Lite CM4 automatically safely shuts itself down when the voltage of the batteries depletes to 3.1V. The Retro Lite CM4 must reboot to output video to an external monitor via the mini HDMI type-A port. 
 
 -------------------------------------------------------------------------------------------------------
 
