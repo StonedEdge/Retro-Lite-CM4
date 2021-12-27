@@ -2,11 +2,13 @@
 # Retro Lite CM4: Raspberry Pi Handheld
 
 ## Description
-The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the BitBuilt forums. The console is powered by a 4000mAh Li-Po and is designed to run with RetroPie, Lakka or Batocera images from an SD card. 
+The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the BitBuilt forums. The console is powered by a 4000mAh Li-Po and is designed to run with various software images, including but not limited to RetroPie, Lakka or Batocera, directly from an SD card. The project was inspired by a Nintendo Switch Lite. 
 
 Click the link below to view the worklog of the Retro Lite CM4: 
 
 https://bitbuilt.net/forums/index.php?threads/retro-lite-cm4-a-stonededge-and-dmcke5-collaboration.3934/
+
+## Requirements to Build the Retro Lite CM4
 
 ### Code 
 Code required to complete the handheld includes an ATtiny84 monitor script, which can be flashed via the 1.27mm pitch 6 pin header on the main Retro Lite PCB with an Arduino or similar. Code for the i2s audio amplifier, fuel gauge and OSD functionality can be compiled directly on the CM4 module from the command line. Current code is non-functional, however will be uploaded at a later date when completed. 
