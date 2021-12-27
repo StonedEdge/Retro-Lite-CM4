@@ -17,7 +17,7 @@ To flash the ATtiny84, you can use an Arduino Uno set up as an ISCP programmer w
 Please install the below ATtiny cores for Arduino IDE support and choose the internal 8Mhz clock at 5v when programming your ATtiny84. 
 https://github.com/damellis/attiny
 
-For further understanding of the BQ24292i, pleaes check the below datasheet. Magic number code will be eliminated soon with proper bitshifting logic at a later date. 
+For further understanding of the BQ24292i, please check the official datasheet below. Magic number code (i.e directly writing hexadecimal values to the write registers) will be eliminated soon, with proper bitshifting logic to be implemented at a later date. 
 https://www.ti.com/lit/ds/symlink/bq24292i.pdf
 
 
