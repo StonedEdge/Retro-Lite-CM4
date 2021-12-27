@@ -23,7 +23,7 @@ The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the Bit
 - USB 2.0 2-port downstream hub
 - External dock passthrough PCB with 4 port USB-hub
 
-Click the link below to view the worklog of the Retro Lite CM4: 
+Click the link below to view a more detailed buildlog of the Retro Lite CM4: 
 
 https://bitbuilt.net/forums/index.php?threads/retro-lite-cm4-a-stonededge-and-dmcke5-collaboration.3934/
 
