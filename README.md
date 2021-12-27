@@ -34,6 +34,8 @@ Code required to complete the handheld includes an ATtiny84 monitor script, whic
 
 To flash the software to the Retro Lite CM4, you can either download the latest RetroPie Retro Lite custom image, or follow the below steps to get up and running. Plan is to eventually put this into a single script. I have not currently tested our firmware on images other than RetroPie, however I assume other images should also work fine. 
 
+-------------------------------------------------------------------------------------------------------
+
 a) Download the latest version of RetroPie for the Raspberry Pi 4/400 here (also compatible with CM4): 
 https://retropie.org.uk/download/ 
 
@@ -56,6 +58,8 @@ sudo ./retrolite &
 sudo ./hdmi_script.sh & 
 
 g) sudo reboot - Reboot to enable all changes 
+
+-------------------------------------------------------------------------------------------------------
 
 You should now have all the required software installed for the Retro Lite CM4 to display battery SoC, charging status, WiFi status, bluetooth status and more. The Retro Lite CM4 automatically safely shuts itself down when the voltage of the batteries depletes to 3.1V. 
 
