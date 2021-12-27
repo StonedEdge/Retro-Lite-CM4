@@ -90,7 +90,7 @@ Total BoM to build the Retro Lite CM4 exceeds $250 USD for a single unit.
 ### Contributors 
 I'd like to thank these people in no particular order for the awesome work you have done to help me complete this project. 
 
-* Dmcke5 for designing the case assets, including machining our prototypes, code and much more. Wouldn't have been possible to complete this without you 
+* Dmcke5 for designing the case assets, including machining/anodizing the prototypes, doing most of the code and much more. Wouldn't have been possible to complete this without you - a team effort
 * Gmanmodz for always being an inspiration for me to get into building handhelds and the modding scene 
 * YveltalGriffin/Mackie, for suggesting various hardware changes and reviews to PCB/schematics. His help was invaluable in learning new things about PCB design
 * Juckett D, for creating the Aegis CM4 and offering tips and tricks along the way. Check out his work here: https://github.com/juckettd
