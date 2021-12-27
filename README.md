@@ -13,7 +13,7 @@ The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the Bit
 - Switched to a tempered glass screen protector instead of painted plastic, now is printed
 - Fuel gauge for accurate battery SoC monitoring - MAX17055 
 - Custom software stack specific to the Retro Lite hardware (HUD)
-- Custom menu activated by pushing select + R3, which allows you to calibrate the sticks, see various things like CPU temp, bring up an on screen keyboard for input, and more
+- Custom menu, activated by pushing select + R3. You can calibrate the analog sticks, see CPU/GPU temp, bring uponscreen keyboard for input. More features to be added.
 - USB-C PD charging capabilities up to 15v (1C charge rate at 2A)
 - Stereo Audio Output
 - Headphone Jack with automatic switching
