@@ -15,7 +15,7 @@ The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the Bit
 - Custom software stack specific to the Retro Lite hardware (HUD)
 - Custom menu, activated by pushing select + R3. You can calibrate the analog sticks, see CPU/GPU temp, bring uponscreen keyboard for input. More features to be added.
 - USB-C PD charging capabilities up to 15v (1C charge rate at 2A)
-- Stereo Audio Output
+- Stereo Audio Output via i2s audio amplifier (i2c controlled)
 - Headphone Jack with automatic switching
 - 4000mAh custom lipo, courtesy of [Helder](https://github.com/Helder1981)
 - Dual stacked shoulder buttons (L, R, LZ, RZ)
