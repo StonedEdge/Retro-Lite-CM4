@@ -1,0 +1,14 @@
+lib/libraspidmx.so /usr/lib/arm-linux-gnueabihf
+lib/libraspidmx.so.1 /usr/lib/arm-linux-gnueabihf
+game/game /usr/share/raspidmx/samples
+game/*png /usr/share/raspidmx/samples
+life/life /usr/share/raspidmx/samples
+mandelbrot/mandelbrot /usr/share/raspidmx/samples
+offscreen/pngresize /usr/share/raspidmx/samples
+pngview/pngview /usr/share/raspidmx/samples
+radar_sweep/radar_sweep /usr/share/raspidmx/samples
+radar_sweep_alpha/radar_sweep_alpha /usr/share/raspidmx/samples
+rgb_triangle/rgb_triangle /usr/share/raspidmx/samples
+spriteview/spriteview /usr/share/raspidmx/samples
+test_pattern/test_pattern /usr/share/raspidmx/samples
+worms/worms /usr/share/raspidmx/samples

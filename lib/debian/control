@@ -1,0 +1,17 @@
+Source: raspidmx
+Maintainer: Albert Casals <skarbat@gmail.com>
+Section: graphics
+Priority: optional
+Standards-Version: 3.9.4
+Build-Depends: debhelper (>=9.0.0), libpng12-dev, libraspberrypi-dev
+Homepage: https://github.com/AndrewFromMelbourne/raspidmx
+
+Package: raspidmx
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, libpng12-0, libraspberrypi0
+Description: A dispmanX API with some simple games and samples
+
+Package: raspidmx-dev
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, raspidmx, libpng12-dev, libraspberrypi-dev
+Description: A dispmanX API development package

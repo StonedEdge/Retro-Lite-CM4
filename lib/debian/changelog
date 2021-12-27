@@ -1,0 +1,23 @@
+raspidmx (1.0-4) unstable; urgency=low
+
+  * Added missing assets for game
+
+ -- Albert Casals <skarbat@gmail.com>  Wed, 07 Jun 2017 23:03:00 +0100
+
+raspidmx (1.0-3) unstable; urgency=low
+
+  * Fixed libpng dependency name
+
+ -- Albert Casals <skarbat@gmail.com>  Wed, 07 Jun 2017 22:50:00 +0100
+
+raspidmx (1.0-2) unstable; urgency=low
+
+  * Fixed internal dependency
+
+ -- Albert Casals <skarbat@gmail.com>  Wed, 07 Jun 2017 22:43:00 +0100
+
+raspidmx (1.0-1) unstable; urgency=low
+
+  * Initial package version
+
+ -- Albert Casals <skarbat@gmail.com>  Wed, 07 Jun 2017 22:09:00 +0100

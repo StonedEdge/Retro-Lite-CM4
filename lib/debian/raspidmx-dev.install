@@ -1,0 +1,2 @@
+lib/libraspidmx.a /usr/lib/arm-linux-gnueabihf
+common/*h /usr/include/raspidmx
