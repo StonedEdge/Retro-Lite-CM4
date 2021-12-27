@@ -34,11 +34,14 @@ Code required to complete the handheld includes an ATtiny84 monitor script, whic
 
 To flash the software to the Retro Lite CM4, you can either download the latest RetroPie Retro Lite custom image, or follow the below steps to get up and running. Plan is to eventually put this into a single script. I have not currently tested our firmware on images other than RetroPie, however I assume other images should also work fine. 
 
-a) Download the latest version of RetroPie for the Raspberry Pi 4/400 here (also compatible with CM4): https://retropie.org.uk/download/ 
+a) Download the latest version of RetroPie for the Raspberry Pi 4/400 here (also compatible with CM4): 
+https://retropie.org.uk/download/ 
 
-b) Install the WM8960 I2S audio amplifier script, by running the script here: https://github.com/StonedEdge/seeed-voicecard
+b) Install the WM8960 I2S audio amplifier script, by running the script here: 
+https://github.com/StonedEdge/seeed-voicecard
 
-c) Install the latest version of WiringPi here: https://github.com/StonedEdge/WiringPi
+c) Install the latest version of WiringPi here: 
+https://github.com/StonedEdge/WiringPi
 
 d) sudo apt-get install libpng12-dev - install the libpng library
 
