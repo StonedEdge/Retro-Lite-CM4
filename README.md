@@ -20,8 +20,11 @@ The CAD files for the Retro Lite CM4 are not available or open source at this st
 The Retro Lite CM4 requires 4 custom designed PCBs to be installed, not including the CM4 carrier board. These include: 
 
 a) Retro Lite CM4 AIO carrier board 
+
 b) Retro Lite Controller PCB (Right)
+
 c) Retro Lite Controller PCB (Left)
+
 d) Retro Lite Button Daughterboard
 
 ### BOM (Bill of Materials) 
