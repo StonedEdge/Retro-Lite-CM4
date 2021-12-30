@@ -45,10 +45,9 @@ void loop() {
     shutdownTimer();
   }
 
-  if (digitalRead(low_volt_shutdown)) { 
+  if (digitalRead(low_volt_shutdown) == HIGH ) { 
     shutdownTimer();
   }
-
 }
 
 void powerTimerCheck(){
