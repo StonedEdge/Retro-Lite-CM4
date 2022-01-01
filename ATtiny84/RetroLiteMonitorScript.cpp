@@ -2,16 +2,17 @@
 #define SDA_PORT PORTA
 #define SCL_PIN 4 
 #define SCL_PORT PORTA
-#include <avr/io.h>
 #include <SoftI2CMaster.h>
 
+byte BQ24292i_ADDRESS = 0xD6; //BQ24292i slave address (8-bit) 
 byte power_btn = 8; //Power button connected to this pin. Low Active
 byte sys_on = 1; //Regulator power. Active High
 byte sht_dwn = 2; //Connected to GPIO25. Signal to start Pi Shutdown. Active High
 byte low_volt_shutdown = 0; //Connected to GPIO16 on pi. Used for low voltage shut down
 
-byte BQ24292i_ADDRESS = 0xD6; 
 byte powerBtnState;
+byte lowVoltInState = LOW;
+byte lastLowVoltInState = LOW;
 byte systemState = 0; //Low Power Off
 bool shutdownInit = false;
 
@@ -22,6 +23,9 @@ long powerOffDelay = 3000;
 long shutDownDelay = 10000;
 bool btnTimerStarted = false;
 bool shutDownTimerStarted = false;
+
+unsigned long lastLowVoltDebounce = 0;
+unsigned long debounceDelay = 50;
 
 void setup() {
   //Serial.begin(9600);
@@ -34,18 +38,19 @@ void setup() {
 }
 
 void loop() {
-  powerButtonDebounce(); //Constantly read button and assign powerBtnState its correct value/debounce button 
-  if (!shutdownInit) { //Initailized to 0 on first boot, run on first passthrough initially. Else, set btnTimerStarted=false. 
-    if (powerBtnState) { //If button has been pressed, then run powerTimerCheck function, else set btnTimerStarted=false.
-      powerTimerCheck(); 
+  powerButtonDebounce();
+  lowVoltShutdownDebounce();
+  
+  if(!shutdownInit){
+    if(powerBtnState){
+      powerTimerCheck();
     } else {
       btnTimerStarted = false;
     }
   } else {
     shutdownTimer();
   }
-
-  if (digitalRead(low_volt_shutdown) == HIGH ) { 
+  if(lowVoltInState){
     shutdownTimer();
   }
 }
@@ -77,10 +82,12 @@ void shutdownTimer(){
     shutDown = millis();
     shutDownTimerStarted = true;
     digitalWrite(sht_dwn, HIGH);//Tell Pi to Shut down
+    shutdownInit = true;
   } else {
     if(shutDown + shutDownDelay < millis()){
       digitalWrite(sys_on, LOW);
       digitalWrite(sht_dwn, LOW);
+      systemState = 0;
       shutDownTimerStarted = false;
       shutdownInit = false;
     }
@@ -88,10 +95,23 @@ void shutdownTimer(){
 }
 
 void powerButtonDebounce(){
-  int input = !digitalRead(power_btn); //Set input to 1 if button is pressed, 0 if released/depressed
-  if (input != powerBtnState){ // powerBtnState initialized to 0 on first pass through 
-    powerBtnState = input; //Set powerBtnState to 1 if button is pressed, 0 if released/depressed
+  int input = !digitalRead(power_btn);
+  if (input != powerBtnState){
+    powerBtnState = input;
   }
+}
+
+void lowVoltShutdownDebounce(){
+  int input = digitalRead(low_volt_shutdown);
+  if(input != lastLowVoltInState){
+    lastLowVoltDebounce = millis();
+  }
+  if((millis() - lastLowVoltDebounce) > debounceDelay){
+    if(input != lowVoltInState){
+      lowVoltInState = input;
+    }
+  }
+  lastLowVoltInState = input;
 }
 
 void BQ_Write(uint8_t address, uint8_t reg, const uint8_t message) {
@@ -110,7 +130,7 @@ void BQ_Write(uint8_t address, uint8_t reg, const uint8_t message) {
   return(data);
  }
 
-// BQ24292i Register Configuration. To be cleaned up
+// BQ24292i Register Configuration Settings 
 //
 //// REG00
 //const uint8_t EN_HIZ = 0;
@@ -150,11 +170,11 @@ void BQ_Write(uint8_t address, uint8_t reg, const uint8_t message) {
 
 uint8_t REG00_config = 0b01111111;
 uint8_t REG01_config = 0b00010001;
-uint8_t REG02_config = 0b01000000; //2A Charge Current. Do not alter for Retro Lite CM4 
+uint8_t REG02_config = 0b01000000; //2A Charge Current. Do not alter for Retro Lite CM4 cell
 uint8_t REG04_config = 0b10110000;
 uint8_t REG05_config = 0b10001010;
 uint8_t REG06_config = 0b00000001;
-uint8_t REG07_config = 0b01001011; //BATFET on
+uint8_t REG07_config = 0b01001011;
 
 void BQ_INIT() {
     BQ_Write(BQ24292i_ADDRESS, 0x00, REG00_config); 
