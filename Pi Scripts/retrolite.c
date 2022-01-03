@@ -51,11 +51,12 @@ static int charge_detect = 7; //Pin goes low when charger is connected. BCM = 4 
 static int pwm_Brightness = 26; //BCM = 12 wPi = 26
 static int fan_pwm = 23; //BCM = 13, wPi = 23
 static int low_voltage_shutdown = 27; // BCM = 16, wPi = 27
+static int headphone_detect = 15; //BCM = 14, wPi = 15
 
 //MAX17055
 static int I2CAddress = 0x36; //0x36 Fuel Gauge, 0x48 ADS1115;
 int I2CDevice;
-int batteryCapacity = 4000; //0x1F40;
+int batteryCapacity = 4000; //0xFA0;
 
 //Display
 int displayX = 800;
@@ -64,7 +65,8 @@ static int statusIconSize = 18; //Size of status icon images
 static int fontWidth = 8;
 static int overlayImageX = 500; //Number of X pixels in overlay image
 static int overlayImageY = 250; //Number of Y pixels in overlay image
-int brightness = 101; //Default Full brightness
+int brightness = 0; //Default Full brightness
+int darkMode = 0; //Default light text/battery mode
 //PNGview Variables
 uint32_t displayNumber;
 VC_IMAGE_TYPE_T type;
@@ -126,19 +128,20 @@ float ChargeVoltage = 4.2;
 int max17055_Status = 0;
 float currentTime = 0;
 float currentSOC = 0;
-char level_Icon[60] = "./batteryIcons/battery_full_white_18dp.png";
-char overlayImage[60] = "./overlays/calibration3.png";
-char bar_Icon[60] = "./volumeIcons/volume_bar_0.png";
-char keyboardHighlight[60] = "./keyboard/00.png";
+char level_Icon[60];// = "./batteryIcons/battery_full_white_18dp.png";
+char overlayImage[60];// = "./overlays/calibration3.png";
+char bar_Icon[60];// = "./volumeIcons/volume_bar_0.png";
+char last_bar_Icon[60];
+char keyboardHighlight[60];// = "./keyboard/00.png";
 int controllerConnected = 0;
 int volume = 100;
 int chargeStep = 0; //Used for charging animation
 int charging = false;
-int cpuFanThreshold = 55; //Temperature fan starts running at. Default 65
+int cpuFanThreshold = 65; //Temperature fan starts running at. Default 65
 int fanSpeed = 0;
 float lowVoltageThreshold = 3.1; //If voltage drops below this value, engage auto shut down.
 int batteryLevelChanged = false;
-int volBrightChanged = false;
+int volBrightPressed = false;
 //char tempSTR[60];
 char batteryText[5];
 
@@ -157,7 +160,8 @@ int testBool = true;
 //Colours
 static RGBA8_T clearColor = {0,0,0,0};
 //static RGBA8_T backgroundColour = { 0, 0, 0, 100 };
-static RGBA8_T textColour = { 255, 255, 255, 255 };
+static RGBA8_T whiteColour = { 255, 255, 255, 255 };
+static RGBA8_T blackColour =  { 0, 0, 0, 255 };
 //static RGBA8_T greenColour = { 0, 255, 0, 200 };
 //static RGBA8_T redColour = { 255, 0, 0, 200 };
 
@@ -226,20 +230,20 @@ void max17055Init(){
         while(wiringPiI2CReadReg16(I2CDevice, 0x3D)&1){
             delay(10);
         }
-        wiringPiI2CWriteReg16(I2CDevice, 0x18, (capacity_multiplier_mAH * batteryCapacity)); //Write DesignCap
-        wiringPiI2CWriteReg16(I2CDevice, 0x45, (int)(capacity_multiplier_mAH * batteryCapacity)/32); //Write dQAcc
-        wiringPiI2CWriteReg16(I2CDevice, 0x1E, 0x666);//256); //Write IchgTerm
-        wiringPiI2CWriteReg16(I2CDevice, 0x3A, 0x9661);//0xA561); //Write VEmpty
+        wiringPiI2CWriteReg16(I2CDevice, 0x18, (batteryCapacity/capacity_multiplier_mAH)); //Write DesignCap
+        wiringPiI2CWriteReg16(I2CDevice, 0x45, (int)(batteryCapacity/capacity_multiplier_mAH)/32); //Write dQAcc
+        wiringPiI2CWriteReg16(I2CDevice, 0x1E, 0x666);//256mA); //Write IchgTerm
+        wiringPiI2CWriteReg16(I2CDevice, 0x3A, 0x9B00);//3.1V); //Write VEmpty
         int HibCFG = wiringPiI2CReadReg16(I2CDevice,0xBA); //Store original HibCFG value
         wiringPiI2CWriteReg16(I2CDevice, 0x60, 0x90); //Exit Hibernate Mode Step 1
         wiringPiI2CWriteReg16(I2CDevice, 0xBA, 0x0); //Exit Hibernate Mode Step 2
         wiringPiI2CWriteReg16(I2CDevice, 0x60, 0x0); //Exit Hibernate Mode Step 3
 
         if(ChargeVoltage > 4.275){
-            wiringPiI2CWriteReg16(I2CDevice, 0x46,(int)(batteryCapacity/32)*51200/batteryCapacity);
+            wiringPiI2CWriteReg16(I2CDevice, 0x46,(int)((batteryCapacity/capacity_multiplier_mAH)/32)*51200/(batteryCapacity/capacity_multiplier_mAH));
             wiringPiI2CWriteReg16(I2CDevice, 0xDB, 0x8400);
         } else {
-            wiringPiI2CWriteReg16(I2CDevice, 0x46,(int)(batteryCapacity/32)*44138/batteryCapacity);
+            wiringPiI2CWriteReg16(I2CDevice, 0x46,(int)((batteryCapacity/capacity_multiplier_mAH)/32)*44138/(batteryCapacity/capacity_multiplier_mAH));
             wiringPiI2CWriteReg16(I2CDevice, 0xDB, 0x8000);
         }
         
@@ -275,7 +279,12 @@ void displayImage(char address[60], int xPos, int yPos, IMAGE_LAYER_T *imgLayer,
 
 void displayText(char text[60], int xPos, int yPos, IMAGE_LAYER_T *imgLayer, int layerOffset){
     initImageLayer(imgLayer, displayX, displayY, type);
-    drawStringRGB(0, 0, text, &textColour, &(imgLayer->image));
+    if(darkMode){
+        drawStringRGB(0, 0, text, &blackColour, &(imgLayer->image));
+    } else {
+        drawStringRGB(0, 0, text, &whiteColour, &(imgLayer->image));
+    }
+    
     createResourceImageLayer(imgLayer, layer + layerOffset);
     update = vc_dispmanx_update_start(0);
     assert(update != 0);
@@ -336,7 +345,8 @@ int main(){
     pinMode(volUp_button, INPUT); pullUpDnControl(volUp_button, PUD_UP);
     pinMode(volDn_button, INPUT); pullUpDnControl(volDn_button, PUD_UP);
     pinMode(pwr_button, INPUT);                               
-    pinMode(charge_detect, INPUT); pullUpDnControl(charge_detect, PUD_UP);
+    pinMode(headphone_detect, INPUT); pullUpDnControl(headphone_detect, PUD_UP);
+    pinMode(charge_detect, INPUT);
     pinMode(pwm_Brightness, PWM_OUTPUT);
     pinMode(fan_pwm, PWM_OUTPUT);
     pinMode(low_voltage_shutdown, OUTPUT);
@@ -419,21 +429,30 @@ int main(){
             calibrationTimerStarted = false;
         }
 
-        //Volume/Brightness Bar Display
+        //Volume/brightness bar display
+        if(volBrightPressed){
+            if(strcmp(last_bar_Icon, bar_Icon) != 0){
+                if(volBrightLayerEN){
+                    destroyImageLayer(&volBrightLayer);
+                }
+                volBrightLayerEN = true;
+                displayImage(bar_Icon, 1, 1, &volBrightLayer, 1);
+                strncpy(last_bar_Icon, bar_Icon, 60);
+            } else {
+                if(!volBrightLayerEN){
+                    volBrightLayerEN = true;
+                    displayImage(bar_Icon, 1, 1, &volBrightLayer, 1);
+                    strncpy(last_bar_Icon, bar_Icon, 60);
+                }
+            }
+            volBrightPressed = false;
+        }
         if(iconTimer + 3000 < time){
-            iconTimer = 0;
             if(volBrightLayerEN){
                 destroyImageLayer(&volBrightLayer);
                 volBrightLayerEN = false;
             }
-        } else if(iconTimer > 0){
-            if(!volBrightLayerEN || volBrightChanged){
-                volBrightLayerEN = true;
-                displayImage(bar_Icon, 1, 1, &volBrightLayer, 1);
-            } else if(volBrightLayerEN && volBrightChanged){
-                destroyImageLayer(&volBrightLayer);
-                displayImage(bar_Icon, 1, 1, &volBrightLayer, 1);
-            }
+            iconTimer = 0;
         }
 
         //Low Battery Shut Down
@@ -466,7 +485,7 @@ int main(){
         //printf("SOC = %f\n", getSOC());
 
         //GPIO for Volume and Power
-        if(GPIOTimer + 50 < time){
+        if(GPIOTimer + 150 < time){
             checkGPIO();
             GPIOTimer = time;
         }
@@ -475,31 +494,31 @@ int main(){
         if(controllerSerial != -1){
             controllerInterface();
         }
+        
 
         //Set screen brightness
         pwmWrite(pwm_Brightness, brightness);
 
         //Fan Control
-        fanControl();
+        //fanControl();
 
         //On Screen Keyboard
-        if(keyboardChanged){
-            if(osKeyboard){
-                //Display Keyboard
-                if(keyCase == 1){
-                    strncpy(overlayImage, "./keyboard/upperCase.png", 60);
-                } else {
-                    strncpy(overlayImage, "./keyboard/lowerCase.png", 60);
+        if(osKeyboard){
+            //Display Keyboard
+            if(keyCase == 1){
+                strncpy(overlayImage, "./keyboard/upperCase.png", 60);
+            } else {
+                strncpy(overlayImage, "./keyboard/lowerCase.png", 60);
+            }
+            if(lastKeyCase != keyCase || !kbdLayerEN){
+                if(kbdLayerEN){
+                    destroyImageLayer(&kbdLayer);
                 }
-                if(lastKeyCase != keyCase){
-                    if(kbdLayerEN){
-                        destroyImageLayer(&kbdLayer);
-                    }
-                    kbdLayerEN = true;
-                    lastKeyCase = keyCase;
-                    displayImage(overlayImage, (displayX /2) - (overlayImageX / 2), (displayY /2) - (overlayImageY / 2), &kbdLayer, 1);
-                }
-                
+                kbdLayerEN = true;
+                lastKeyCase = keyCase;
+                displayImage(overlayImage, (displayX /2) - (overlayImageX / 2), (displayY /2) - (overlayImageY / 2), &kbdLayer, 1);
+            }
+            if(keyboardChanged){
                 //Update highlighted key
                 char tempSTR[60];
                 sprintf(tempSTR, "./keyboard/%d%d.png", keyboardRow, keyboardCollumn);
@@ -510,56 +529,11 @@ int main(){
                 }
                 kbdHighlightLayerEN = true;
                 displayImage(keyboardHighlight, (displayX /2) - (overlayImageX / 2), (displayY /2) - (overlayImageY / 2), &kbdHighlightLayer, 1);
-
+                keyboardChanged = false;
             }
-            keyboardChanged = false;
-            
+
         }
-
-        /*//Keyboard Demo
-        if(keyboardDemo){
-            osKeyboard = true;
-
-            if(demoTimer + 50 < time){
-                if(keyboardRow != 0){
-                    if(keyboardCollumn < 9){
-                        keyboardCollumn++;
-                    } else {
-                        keyboardCollumn = 0;
-                        if(keyboardRow < 4){
-                            keyboardRow++;
-                        } else {
-                            keyboardRow = 0;
-                            if(keyCase == 0){
-                                keyCase = 1;
-                            } else {
-                                keyCase = 0;
-                            }
-                        }
-                    }
-                    demoTimer = time;
-                } else {
-                    if(keyboardCollumn < 6){
-                        keyboardCollumn++;
-                    } else {
-                        keyboardCollumn = 0;
-                        if(keyboardRow < 4){
-                            keyboardRow++;
-                        } else {
-                            keyboardRow = 0;
-                            if(keyCase == 0){
-                                keyCase = 1;
-                            } else {
-                                keyCase = 0;
-                            }
-                        }
-                    }
-                    demoTimer = time;
-                }
-                keyboardChanged = true;
-            }
-        }*/
-
+            
         //Print Ram Usage
         //char buf[BUFSIZ];
         //snprintf(buf, sizeof(buf), "free -h");
@@ -622,27 +596,24 @@ void checkResolution(){
 
 void controllerInterface(){
     int value;
-    int brightnessChanged = false;
 
     while(serialDataAvail(controllerSerial)){
         value = serialGetchar(controllerSerial);
         if(value == brightnessUp){
-            printf("Brightness Up\n");
-            if(brightness <= 91){
+            if(brightness <= 90){
                 brightness += 10;
                 saveValues();
-                brightnessChanged = true;
             }
             iconTimer = millis();
+            volBrightPressed = true;
         }
         if(value == brightnessDn){
-            printf("Brightness Down\n");
-            if(brightness >= 11){
+            if(brightness >= 10){
                 brightness -= 10;
                 saveValues();
-                brightnessChanged = true;
             }
             iconTimer = millis();
+            volBrightPressed = true;
         }
         if(value == calibrationStepOne){
             printf("Calibration Step 1\n");
@@ -780,12 +751,7 @@ void controllerInterface(){
             keyboardChanged = true;
         }
 
-        char temp[60];
-        strncpy(temp, bar_Icon, 60);
-        
-        if(brightnessChanged){
-            printf("Brightness = %d", brightness);
-            //printf("%s\n", bar_Icon);
+        if(volBrightPressed){
             if(brightness == 0){
                 strncpy(bar_Icon, "./brightnessIcons/brightness_0.png", 60);
             } else if(brightness == 10){
@@ -809,12 +775,6 @@ void controllerInterface(){
             } else if(brightness == 100){
                 strncpy(bar_Icon, "./brightnessIcons/brightness_100.png", 60);
             }
-            //iconTimer = millis();
-            //printf("%s\n", bar_Icon);
-        }
-
-        if(strcmp(temp,bar_Icon) != 0){
-            volBrightChanged = true;
         }
     }
 }
@@ -831,12 +791,7 @@ void loadValues(){
         return;
     }
     fgets(buff, 255, (FILE*)fp);
-    sscanf(buff, "%d %f %d %d %d", &batteryCapacity, &lowVoltageThreshold, &cpuFanThreshold, &brightness, &volume);
-    printf("batteryCapacity: %d\n", batteryCapacity);
-    printf("lowVoltageThreshold: %f\n", lowVoltageThreshold);
-    printf("cpuFanThreshold: %d\n", cpuFanThreshold);
-    printf("brightness: %d\n", brightness);
-    printf("volume: %d\n", volume);
+    sscanf(buff, "%d %f %d %d %d %d", &batteryCapacity, &lowVoltageThreshold, &cpuFanThreshold, &brightness, &volume, &darkMode);
     fclose(fp);
 
     //Input Parsing
@@ -846,6 +801,7 @@ void loadValues(){
     } else {
         temp = brightness / 10;
         brightness = temp * 10;
+        parsingFailed = true;
     }
     if(volume > 100 || volume < 0){
         volume = 100;
@@ -853,6 +809,7 @@ void loadValues(){
     } else {
         temp = volume / 10;
         volume = temp * 10;
+        parsingFailed = true;
     }
     if(lowVoltageThreshold < 2.8){
         lowVoltageThreshold = 3.0;
@@ -861,6 +818,12 @@ void loadValues(){
     if(parsingFailed){
         saveValues();
     }
+    printf("batteryCapacity: %d\n", batteryCapacity);
+    printf("lowVoltageThreshold: %f\n", lowVoltageThreshold);
+    printf("cpuFanThreshold: %d\n", cpuFanThreshold);
+    printf("brightness: %d\n", brightness);
+    printf("volume: %d\n", volume);
+    printf("DarkMode: %d\n", darkMode);
 }
 
 void saveValues(){
@@ -870,7 +833,7 @@ void saveValues(){
         printf("Error Logging Values! \n");
         return;
     } else {
-        fprintf(fptr, "%d %f %d %d %d", batteryCapacity, lowVoltageThreshold, cpuFanThreshold, brightness, volume);
+        fprintf(fptr, "%d %f %d %d %d %d", batteryCapacity, lowVoltageThreshold, cpuFanThreshold, brightness, volume, darkMode);
     }
     fclose(fptr);
 }
@@ -937,16 +900,17 @@ void batteryChargingDisplay(){
 
 void checkGPIO(){
     char buf[BUFSIZ];
-    bool volumeChange = false;
+    //bool volumeChange = false;
     if(digitalRead(volUp_button) == 0){
         if(volume <= 90){
             volume += 10;
             snprintf(buf, sizeof(buf), "amixer -M set Playback %d%%", volume); //Playback
             //printf("%s\n", buf); //Debug
             system(buf);
-            volumeChange = true;
+            //volumeChange = true;
         }
         iconTimer = millis();
+        volBrightPressed = true;
     }
     if(digitalRead(volDn_button) == 0){
         if(volume >= 10){
@@ -954,18 +918,17 @@ void checkGPIO(){
             snprintf(buf, sizeof(buf), "amixer -M set Playback %d%%", volume); //Playback
             //printf("%s\n", buf); //Debug
             system(buf);
-            volumeChange = true;
+            //volumeChange = true;
         }
         iconTimer = millis();
+        volBrightPressed = true;
     }
     if(digitalRead(pwr_button) == 1){
         printf("Shutdown\n");
         system("sudo halt"); //Shut Down
     }
-    if(volumeChange){
+    if(volBrightPressed){
         saveValues();
-        char temp[60];
-        strncpy(temp, bar_Icon, 60);
 
         if(volume == 0){
             strncpy(bar_Icon, "./volumeIcons/volume_bar_0.png", 60);
@@ -990,9 +953,6 @@ void checkGPIO(){
         } else if(volume == 100){
             strncpy(bar_Icon, "./volumeIcons/volume_bar_100.png", 60);
         }
-        if(strcmp(bar_Icon, temp) != 0){
-            volBrightChanged = true;
-        }
     }
     if(digitalRead(charge_detect) == 0){ //If charging
         charging = true;
@@ -1001,7 +961,7 @@ void checkGPIO(){
     }
 }
 
-void fanControl(){ //Currently unfinished - not working. 
+void fanControl(){
     float systemp, millideg;
     FILE *thermal;
 
