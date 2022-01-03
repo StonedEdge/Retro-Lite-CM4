@@ -233,7 +233,7 @@ void max17055Init(){
         wiringPiI2CWriteReg16(I2CDevice, 0x18, (batteryCapacity/capacity_multiplier_mAH)); //Write DesignCap
         wiringPiI2CWriteReg16(I2CDevice, 0x45, (int)(batteryCapacity/capacity_multiplier_mAH)/32); //Write dQAcc
         wiringPiI2CWriteReg16(I2CDevice, 0x1E, 0x666);//256mA); //Write IchgTerm
-        wiringPiI2CWriteReg16(I2CDevice, 0x3A, 0x9B00);//3.1V); //Write VEmpty
+        wiringPiI2CWriteReg16(I2CDevice, 0x3A, 0x9B00);//3.1V); //Write VEmpty, same as low voltage cutoff value for software shut init
         int HibCFG = wiringPiI2CReadReg16(I2CDevice,0xBA); //Store original HibCFG value
         wiringPiI2CWriteReg16(I2CDevice, 0x60, 0x90); //Exit Hibernate Mode Step 1
         wiringPiI2CWriteReg16(I2CDevice, 0xBA, 0x0); //Exit Hibernate Mode Step 2
