@@ -5,23 +5,32 @@
 The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the BitBuilt forums. The console is powered by a 4000mAh Li-Po and is designed to run with various software images, including but not limited to RetroPie, Lakka or Batocera, directly from an SD card. The project housing was inspired by a Nintendo Switch Lite, but is not a 100% match to the original. The CM4 cannot currently emulate consoles released after the PSP or Dreamcast. This means GameCube, Wii and 3DS are currently unplayable until the Foundation releases a newer version of the Compute Module line. 
 
 ## Features
-- Raspberry Pi 4 SoC: Broadcom BCM2711 quad-core Cortex-A72 @ 1.5GHz (overclockable to 2.1GHz)
+- Machined aluminum 6061 housing (green/purple), custom machined and anodized by Dmcke5
+- Raspberry Pi 4 SoC: Broadcom BCM2711 quad-core Cortex-A72 @ 1.5GHz (ARM CPU overclockable to 2.1GHz, GPU overclockable to 850MHz)
 - 2GB of LPDDR4-3200 SDRAM
 - 5.0GHz IEEE 802.11b/g/n/ac wireless, Bluetooth 5.0
-- 800 x 480 HDMI video output (HDMI0 - internal)
-- 1080p 60fps HDMI video output (HDMI1 - external)
-- Switched to a tempered glass screen protector instead of painted plastic, now is printed
-- Fuel gauge for accurate battery SoC monitoring - MAX17055 
-- Custom software stack specific to the Retro Lite hardware (HUD)
-- Custom menu, activated by pushing select + R3. You can calibrate the analog sticks, see CPU/GPU temp, bring uponscreen keyboard for input. More features to be added.
-- USB-C PD charging capabilities up to 15v (1C charge rate at 2A)
-- Stereo Audio Output via i2s audio amplifier (i2c slave, i2s master)
-- Headphone Jack with automatic switching
-- 4000mAh custom lipo, courtesy of [Helder](https://github.com/Helder1981)
+- Custom AIO 4-layer PCB, with CM4 mezzanines, 5v boost rated at 2.1A continuous current, 3.3v buck, USB2422 hub, BQ24292i, MAX17055 fuel gauge, ATtiny84, WM8960 amp, TFP401 encoder, SD card slot, USB-C hardware and mini HDMI type A
+- 2x controller PCBs with FFC cables
+- 800 x 480 (5:3 aspect ratio) IPS display
+- HDMI video output (HDMI0 - internal)
+- 1080p 60fps HDMI video output (HDMI1 - external) via the mini HDMI port
+- Tempered glass screen protector
+- Fuel gauge for accurate battery SoC monitoring - MAX17055, custom battery indicator shown in steps of 10 icons, plus %SoC value, via dispmanx APIs on a HDMI panel
+- Charging indicator
+- HDMI switching scripts, to shutdown and reboot to external HDMI with an overclock applied
+- ATMEGA32u4 internal USB 2.0 controller
+- Brightness and volume HUD adjustment, in steps of 10 icons. Brightness is adjusted by holding select + up/down on the DPAD
+- Custom menu, activated by pushing select + R3. The menu consists of 4 sections (1. Battery Information, 2. Controller Calibration, 3. Onscreen Keyboard, 4. Settings Menu) -   courtesy of Dmcke5's hard work and ideas :D
+- USB-C PD charging capabilities up to 15v (0.5C charge rate at 2A) with an original Nintendo Switch charger
+- Stereo Audio Output via i2s WM8960 Wolfson audio amplifier
+- Headphone jack, with automatic switching
+- 4000mAh custom lipo design, providing 4 hours of gameplay
 - Dual stacked shoulder buttons (L, R, LZ, RZ)
-- Safe software/hardware shutdown to prevent corruption to the SD card data
+- 2x switch analog sticks, range programmable in software
+- Resin casted ABXY, DPAD, start+select, shoulder buttons with acetal spring hinge + silicone membranes
+- Safe software/hardware shutdown to prevent corruption to the SD card data (low voltage shutdown included)
 - USB 2.0 2-port downstream hub
-- External dock passthrough PCB with 4 port USB-hub
+- External dock passthrough PCB with 4 port USB-hub (unfinished)
 
 Click the link below to view a more detailed buildlog of the Retro Lite CM4: 
 
