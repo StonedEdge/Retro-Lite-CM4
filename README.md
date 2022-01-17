@@ -2,7 +2,7 @@
 # Retro Lite CM4: Raspberry Pi Handheld
 
 ## Description
-The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge from the BitBuilt forums. The console is powered by a 4000mAh Li-Po and is designed to run with various software images, including but not limited to RetroPie, Lakka or Batocera, directly from an SD card. The project housing was inspired by a Nintendo Switch Lite, but is not a 100% match to the original. The CM4 cannot currently emulate consoles released after the PSP or Dreamcast. This means GameCube, Wii and 3DS are currently unplayable until the Foundation releases a newer version of the Compute Module line. 
+The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge. The console is powered by a 4000mAh Li-Po and is designed to run with various software images, including but not limited to RetroPie, Lakka or Batocera, directly from an SD card or via eMMC storage. The project housing was inspired by a Nintendo Switch Lite, but is not a 100% match to the original. The CM4 cannot currently emulate 64-bit consoles released after the PSP or Dreamcast. This means GameCube, Wii and 3DS are currently unplayable until the Foundation releases a newer version of the Compute Module line. 64-bit OS can be flashed to the SD card, however performance is still awful due to GPU bottlenecks. 
 
 ## Features
 - Machined aluminum 6061 housing (green/purple), custom machined and anodized by Dmcke5
