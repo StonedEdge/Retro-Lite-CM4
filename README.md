@@ -33,7 +33,6 @@ The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge. The console
 - External dock passthrough PCB with 4 port USB-hub (unfinished)
 
 Click the link below to view a more detailed buildlog of the Retro Lite CM4: 
-
 https://bitbuilt.net/forums/index.php?threads/retro-lite-cm4-a-stonededge-and-dmcke5-collaboration.3934/
 
 ## Requirements to Build the Retro Lite CM4
@@ -64,7 +63,7 @@ sudo ./hdmi_script.sh &
 
 g) sudo reboot - Reboot to enable all changes 
 
-You should now have all the required software installed for the Retro Lite CM4 to display battery SoC, charging status, WiFi status, bluetooth status and more. The Retro Lite CM4 automatically safely shuts itself down when the voltage of the batteries depletes to 3.1V. The Retro Lite CM4 must reboot to output video to an external monitor via the mini HDMI type-A port. 
+You should now have all the required software installed for the Retro Lite CM4 to display battery SoC, charging status, WiFi status, bluetooth status and more. The Retro Lite CM4 automatically safely shuts itself down when the voltage of the batteries depletes to 3.1V - adjustable directly from the settings calibration menu. The Retro Lite CM4 must reboot to output video to an external monitor via the mini HDMI type-A port, which is handled by the hdmi_switch.sh script. 
 
 -------------------------------------------------------------------------------------------------------
 
