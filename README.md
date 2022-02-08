@@ -97,7 +97,7 @@ Features that I would like to add to the handheld (welcome for others to assist)
 
 a) HDMI over USB-C
 
-b) OTG integration (power perihperals through the same USB-C port)
+b) OTG integration (power perihperals through the onboard USB-C port)
 
 c) DSI 5.5" display (struggle to know of a way to get this working currently on the Pi)
 
