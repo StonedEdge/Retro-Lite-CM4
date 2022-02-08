@@ -92,6 +92,17 @@ Link to the BoM will be added at a later stage.
 Total BoM to build the Retro Lite CM4 exceeds $250 USD for a single unit, more if you machine the case in aluminum. 
 
 -------------------------------------------------------------------------------------------------------
+### New Revision Features
+Features that I would like to add to the handheld (welcome for others to assist) include the following:
+
+a) HDMI over USB-C
+b) OTG integration (power perihperals through the same USB-C port)
+c) DSI 5.5" display (struggle to know of a way to get this working currently on the Pi)
+
+Feel free to make a pull request with any changes you would like seen to the handheld. 
+
+-------------------------------------------------------------------------------------------------------
+
 
 ### Contributors 
 I'd like to thank these people in no particular order for the awesome work you have done to help me complete this project. 
