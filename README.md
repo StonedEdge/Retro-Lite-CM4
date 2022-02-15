@@ -95,11 +95,11 @@ Total BoM to build the Retro Lite CM4 exceeds $250 USD for a single unit, more i
 ### New Revision Features
 Features that I would like to add to the handheld (welcome for others to assist) include the following:
 
-a) HDMI over USB-C
+a) HDMI over USB-C, using the TPS65987D and the TUSB546A-DCI high speed mux. 
 
-b) OTG integration (power perihperals through the onboard USB-C port)
+b) OTG integration (power perihperals through the onboard USB-C port). 
 
-c) DSI 5.5" display (struggle to know of a way to get this working currently on the Pi)
+c) DSI 5.5" display (struggle to know of a way to get this working currently on the Pi). 
 
 Feel free to make a pull request with any changes you would like seen to the handheld. 
 
