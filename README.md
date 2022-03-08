@@ -15,7 +15,7 @@ The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge. The console
 - HDMI video output (HDMI0 - internal)
 - 1080p 60fps HDMI video output (HDMI1 - external) via the mini HDMI port
 - Tempered glass screen protector
-- Fuel gauge for accurate battery SoC monitoring - MAX17055, custom battery indicator shown in steps of 10 icons, plus %SoC value, via dispmanx APIs on a HDMI panel
+- Fuel gauge for accurate battery SoC monitoring - MAX17055, custom battery indicator shown in steps of 10 icons, plus %SoC value, via dispmanx APIs on a TFT HDMI driven panel
 - Charging indicator
 - HDMI switching scripts, to shutdown and reboot to external HDMI with an overclock applied
 - ATMEGA32u4 internal USB 2.0 controller
