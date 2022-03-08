@@ -18,7 +18,7 @@ The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge. The console
 - Fuel gauge for accurate battery SoC monitoring - MAX17055, custom battery indicator shown in steps of 10 icons, plus %SoC value, via dispmanx APIs on a TFT HDMI driven panel
 - Charging indicator
 - HDMI switching scripts, to shutdown and reboot to external HDMI with an overclock applied
-- ATMEGA32u4 internal USB 2.0 controller
+- ATMEGA32u4 internal USB 2.0 HID controller
 - Brightness and volume HUD adjustment, in steps of 10 icons. Brightness is adjusted by holding select + up/down on the DPAD
 - Custom menu, activated by pushing select + R3. The menu consists of 4 sections (1. Battery Information, 2. Controller Calibration, 3. Onscreen Keyboard, 4. Settings Menu) -   courtesy of Dmcke5's hard work and ideas :D
 - USB-C PD charging capabilities up to 15v (0.5C charge rate at 2A) with an original Nintendo Switch charger
