@@ -112,3 +112,4 @@ I'd like to thank these people in no particular order for the awesome work you h
 * Dmcke5 for designing the case assets, including machining/anodizing the prototypes, doing most of the code and much more. Wouldn't have been possible to complete this without you - a team effort
 * YveltalGriffin/Mackie, for suggesting various hardware changes and reviews to PCB/schematics. His help was invaluable in learning new things about PCB design
 * Juckett D, for creating the Aegis CM4 and offering tips and tricks along the way. Check out his work here: https://github.com/juckettd
+* Aurelio Manarra, for always helping me out with my non EE questions and various other things ᕕ( ᐛ )ᕗ
