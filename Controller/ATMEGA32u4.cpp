@@ -20,6 +20,7 @@
 
 #include <Joystick.h> //https://github.com/MHeironimus/ArduinoJoystickLibrary
 #include "Keyboard.h"
+#include "Mouse.h"
 #include <EEPROM.h>
 
 //Serial Comms
@@ -37,6 +38,10 @@ byte osKeyboardSelect = 0x10;
 byte osKeyboardDisabled = 0x11;
 byte menuOpen = 0x12;
 byte menuClose = 0x13;
+byte povModeEnable = 0x14;
+byte povModeDisable = 0x15;
+byte mouseEnable = 0x16; //Currently unused. May be used in future to toggle mouse from OSD menu
+byte mouseDisable = 0x17; //Currently unused. May be used in future to toggle mouse from OSD menu
 int serialButtonDelay = 150;
 
 //Options
@@ -51,7 +56,7 @@ byte dpadPins[4] = {8,11,9,10}; //Up, Right, Down, Left. Do not change order of 
 //Button state arrays
 byte dpadPinsState[4];  //Empty State array for dPad
 byte lastButtonState[13]; //Empty State array for buttons last sent state. Must be same length as buttonPins
-byte currentButtonState[13]; //Empty State array for buttons. MMust be same length as buttonPins
+byte currentButtonState[13]; //Empty State array for buttons. Must be same length as buttonPins
 
 //Define Analog Pins for joysticks
 const int leftJoyX = A3;
@@ -75,7 +80,7 @@ boolean scaledJoystickOutput = true; //Enable joystick scaling. Needed for switc
 
 //Main Joystick setup
 Joystick_ Joystick(JOYSTICK_DEFAULT_REPORT_ID,JOYSTICK_TYPE_GAMEPAD,
-buttonCount, 0,       // Button Count, Hat Switch Count
+buttonCount, 1,       // Button Count, Hat Switch Count
 true, true, true,     // X Y Z
 true, true, true,  // Rx, Ry, Rz
 false, false,          // Rudder, Throttle
@@ -113,9 +118,18 @@ long lastPollingReport;
 unsigned long keyboardTimer;
 boolean L3Pressed = false;
 boolean menuEnabled = false;
+boolean povHatMode = true; //Enable to use POV Hat for Dpad instead of analog
+
+//Mouse Variables
+boolean mouseEnabled = false;
+int mouseDivider = 8; //Adjust this value to control mouse sensitivity. Higher number = slower response.
+unsigned long mouseTimer;
+int mouseInterval = 10; //Interval in MS between mouse updates
+unsigned long mouseModeTimer;
+boolean mouseModeTimerStarted = false;
 
 
-void setup() { 
+void setup() {
   //Needed for Retropie to detect axis.
   Joystick.setXAxisRange(0, 254);
   Joystick.setYAxisRange(0, 254);
@@ -128,6 +142,7 @@ void setup() {
   while (!Serial); //Needed on 32u4 based arduinos for predictable serial output.
   Joystick.begin(false); //Initialise joystick mode with auto sendState disabled as it has a huge processor time penalty for seemingly no benefit.
   Keyboard.begin(); //Initialise keyboard for on screen keyboard input
+  Mouse.begin(); //Initialise mouse control
   
   for(int i = 0; i < buttonCount; i++){ //Set all button pins as input pullup. Change to INPUT if using external resistors.
     pinMode(buttonPins[i], INPUT_PULLUP);
@@ -153,7 +168,33 @@ void loop() {
     serialEvent();
     menuMode();
   }
-  if(lastButtonState[8] == HIGH && dpadPinsState[0] == 1){
+  
+  //Mouse Toggle
+  if(lastButtonState[12] == HIGH){ //Left joystick click toggles the mouse cursor to an on/off state
+    if(!mouseModeTimerStarted){
+      mouseModeTimerStarted = true;
+      mouseModeTimer = millis();
+    } else {
+      if(mouseModeTimer + 2000 < millis()){
+        if(mouseEnabled){
+          mouseEnabled = false;
+        } else {
+          mouseEnabled = true;
+        }
+        mouseModeTimerStarted = false;
+      }
+    }
+  } else {
+    mouseModeTimerStarted = false;
+  }
+  //Mouse Mode
+  if(mouseEnabled){
+    if(mouseTimer + mouseInterval < millis()){
+      mouseControl();
+      mouseTimer = millis();
+    }
+  }
+  if(lastButtonState[8] == HIGH && dpadPinsState[0] == 1){ 
     Serial.write(brightnessUp);
     delay(serialButtonDelay);
   }
@@ -164,11 +205,11 @@ void loop() {
   if(lastButtonState[8] == HIGH && lastButtonState[0] == HIGH){ //If this combination of buttons is pressed, Open Menu. (Select and right joystick button)
     if(menuEnabled){
       Serial.write(menuClose);
-      delay(50);
+      delay(200);
       menuEnabled = false;
     } else {
       Serial.write(menuOpen);
-      delay(50);
+      delay(200);
       menuEnabled = true;
     }
   }
@@ -190,13 +231,66 @@ void serialEvent(){
       Keyboard.press(KEY_RIGHT_ARROW);
     } else if(inChar == 15){ //Left
       Keyboard.press(KEY_LEFT_ARROW);
+    } else if(inChar == 17){ //Up
+      Keyboard.press(KEY_UP_ARROW);
+    } else if(inChar == 18){ //Down
+      Keyboard.press(KEY_DOWN_ARROW);
     } else if(inChar == calibrationStepOne){
       calibrationMode = true;
+    } else if(inChar == menuClose){
+      menuEnabled = false;
+    } else if(inChar == povModeDisable){
+      povHatMode = false;
+    } else if(inChar == povModeEnable){
+      povHatMode = true;
     } else {
       Keyboard.press(inChar);
     }
     delay(10);
     Keyboard.releaseAll();
+  }
+}
+
+void mouseControl(){
+  int var;
+
+  //Calculate Y Value
+  var = readJoystick(leftJoyY, invertLeftY); //read raw input
+  var = (var - minLeftY) / 2; //scale to fit LUT
+  var = leftYLUT[var]; //Read value from LUT
+  var = var - 127; //Shift to 0 centre.
+  int yMove = var / mouseDivider; //Divide signal by the mouseDivider for mouse level output
+ 
+  //Calculate X Value
+  var = readJoystick(leftJoyX, invertLeftX);
+  var = (var - minLeftX) / 2;
+  var = leftXLUT[var];
+  var = var - 127;
+  int xMove = var / mouseDivider;
+
+  //Move Mouse
+  Mouse.move(xMove, yMove, 0); //X, Y, Scroll Wheel
+  
+  //Left Click
+  if(lastButtonState[6] == 1){ //Right ZR trigger
+    if(!Mouse.isPressed(MOUSE_LEFT)){
+      Mouse.press(MOUSE_LEFT);
+    }
+  } else {
+    if(Mouse.isPressed(MOUSE_LEFT)){
+      Mouse.release(MOUSE_LEFT);
+    }
+  }
+  
+  //Right Click //Left ZR trigger
+  if(lastButtonState[9] == 1){
+    if(!Mouse.isPressed(MOUSE_RIGHT)){
+      Mouse.press(MOUSE_RIGHT);
+    }
+  } else {
+    if(Mouse.isPressed(MOUSE_RIGHT)){
+      Mouse.release(MOUSE_RIGHT);
+    }
   }
 }
 
@@ -262,20 +356,46 @@ void joypadButtons(){ //Set joystick buttons for USB output
   }
 }
 
-void dPadInput(){ //D-Pad as RY and RZ Axis
-  if(dpadPinsState[0] == 1 && lastButtonState[8] != HIGH){ //Up
-    Joystick.setRyAxis(2);
-  } else if(dpadPinsState[2] == 1 && lastButtonState[8] != HIGH){ //Down
-    Joystick.setRyAxis(0);
-  } else {
-    Joystick.setRyAxis(1);
-  }
-  if(dpadPinsState[1] == 1){ //Right
-    Joystick.setRzAxis(2);
-  } else if(dpadPinsState[3] == 1){ //Left
-    Joystick.setRzAxis(0);
-  } else {
-    Joystick.setRzAxis(1);
+  void dPadInput(){ //D-Pad as RY and RZ Axis
+  if(!povHatMode){
+    if(dpadPinsState[0] == 1 && lastButtonState[8] != HIGH){ //Up
+      Joystick.setRyAxis(2);
+    } else if(dpadPinsState[2] == 1 && lastButtonState[8] != HIGH){ //Down
+      Joystick.setRyAxis(0);
+    } else {
+      Joystick.setRyAxis(1);
+    }
+    if(dpadPinsState[1] == 1){ //Right
+      Joystick.setRzAxis(2);
+    } else if(dpadPinsState[3] == 1){ //Left
+      Joystick.setRzAxis(0);
+    } else {
+      Joystick.setRzAxis(1);
+    }
+  } else { //POV Hat Mode
+    int angle = -1;
+    if(dpadPinsState[0] == 1 && lastButtonState[8] != HIGH){ //Up
+      if(dpadPinsState[1] == 1) {
+        angle = 45;
+      } else if(dpadPinsState[3] == 1) {
+        angle = 315;
+      } else {
+        angle = 0;
+      }
+    } else if(dpadPinsState[2] == 1 && lastButtonState[8] != HIGH){ //Down
+      if(dpadPinsState[1] == 1) {
+        angle = 135;
+      } else if(dpadPinsState[3] == 1) {
+        angle = 225;
+      } else {
+        angle = 180;
+      }
+    } else if(dpadPinsState[1] == 1){ //Right
+      angle = 90;
+    } else if(dpadPinsState[3] == 1){ //Left
+      angle = 270;
+    }
+    Joystick.setHatSwitch(0, angle);
   }
 }
 
