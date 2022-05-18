@@ -799,6 +799,14 @@ void checkGPIO(){
 }
 
 void fanControl(){
+    const int cpuFanThreshold = 45; //Minimum temperature for the fan to start spinning 
+    const int temp_fan_min = 50; //Fan begins to spin 
+    const int temp_fan_full = 58; //Fan is at max PWM 
+    const int pwm_fan_min = 51; //Fan minimum PWM 
+    const int pwm_fan_max = 101; //Fan maximum PWM
+    
+    static int fanSpeed = 0;
+
     float millideg;
     FILE *thermal;
 
@@ -807,11 +815,14 @@ void fanControl(){
     fclose(thermal);
     systemp = (int)(millideg / 10.0f) / 100.0f;
     //printf("CPU: %.2fC \n", systemp);
-    if(systemp > cpuFanThreshold){
-        fanSpeed = 101;
-        pwmWrite(fan_pwm, fanSpeed);
-    } else {
+    if(systemp <= temp_fan_off){
         fanSpeed = 0;
-        pwmWrite(fan_pwm, fanSpeed);
     }
+    else if(temp_fan_min <= systemp && systemp <= temp_fan_full){
+        fanSpeed = (pwm_fan_min*(temp_fan_full-systemp) + pwm_fan_max*(systemp-temp_fan_min))/((temp_fan_full-temp_fan_min));
+    }
+    else if (systemp > temp_fan_full) {
+        fanSpeed = pwm_fan_max;
+    }
+    pwmWrite(fan_pwm, fanSpeed);
 }
