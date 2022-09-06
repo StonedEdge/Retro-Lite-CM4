@@ -50,6 +50,11 @@ float getTimeToEmpty() {
   return TTE_raw * time_multiplier_Hours;
 }
 
+float getTimeToFull() { 
+  int TTF_raw = wiringPiI2CReadReg16(I2CDevice, TimeToFull);
+  return TTF_raw * time_multiplier_Hours;
+}
+
 uint16_t getVEmpty() {
   uint16_t VEmpty_raw = wiringPiI2CReadReg16(I2CDevice, 0x3A);
   return (((VEmpty_raw >> 7) & 0x1FF) * 10);
