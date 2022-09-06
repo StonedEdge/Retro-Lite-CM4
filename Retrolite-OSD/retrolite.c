@@ -160,7 +160,7 @@ int main(){
         //Low Battery Shut Down
         if(max17055_Status != -1){
             if(!shutdownTimerStarted){
-                if(getSOC() == 0){
+                if(getSOC() == 0 && !charging){
                     strncpy(overlayImage, "./overlays/lowbatterywarning.png", 60);
                     if(kbdLayerEN){
                         destroyImageLayer(&kbdLayer);
@@ -384,31 +384,32 @@ void controllerInterface(){
             menuActive = 0;
             printf("Menu Disabled\n");
         }
-        if(!osKeyboard)
-        if(value == osKeyboardUp){
-            //Menu Selection Up
-            if(menuSelected > 1 && menuSelected != 7){
-                menuSelected -= 1;
-                menuUpdated = true;
-            } else if(menuSelected == 7){
-                menuSelected = 5;
-                menuUpdated = true;
-            }
-        }
-        if(value == osKeyboardDn){
-            //Menu Selection Down
-            if(menuActive != 4){
-                if(menuSelected < 4){
-                    menuSelected += 1;
+        if(!osKeyboard){
+            if(value == osKeyboardUp){
+                //Menu Selection Up
+                if(menuSelected > 1 && menuSelected != 7){
+                    menuSelected -= 1;
+                    menuUpdated = true;
+                } else if(menuSelected == 7){
+                    menuSelected = 5;
                     menuUpdated = true;
                 }
-            } else {
-                if(menuSelected < 5){
-                    menuSelected += 1;
-                    menuUpdated = true; 
-                } else if(menuSelected == 5){
-                    menuSelected = 7;
-                    menuUpdated = true;
+            }
+            if(value == osKeyboardDn){
+                //Menu Selection Down
+                if(menuActive != 4){
+                    if(menuSelected < 4){
+                        menuSelected += 1;
+                        menuUpdated = true;
+                    }
+                } else {
+                    if(menuSelected < 5){
+                        menuSelected += 1;
+                        menuUpdated = true; 
+                    } else if(menuSelected == 5){
+                        menuSelected = 7;
+                        menuUpdated = true;
+                    }
                 }
             }
         }
@@ -719,9 +720,9 @@ void batteryChargingDisplay(){
 
 void checkGPIO(){
     char buf[BUFSIZ];
-    if(hpd_change == true){
+if(hpd_change == true){
     if(digitalRead(hpd_detect) == 1){
-         snprintf(buf, sizeof(buf), "amixer -M set Speaker %d%%", 79); //Playback
+         snprintf(buf, sizeof(buf), "amixer -M set Speaker %d%%", 90); //Playback
          //printf("%s\n", buf); //Debug
          system(buf);
       }
@@ -730,7 +731,7 @@ void checkGPIO(){
 
     if(hpd_change == false){
     if(digitalRead(hpd_detect) == 0){
-         snprintf(buf, sizeof(buf), "amixer -M set Speaker %d%%", 0); //Playback
+         snprintf(buf, sizeof(buf), "amixer -M set Speaker %d%%", 0);
          //printf("%s\n", buf); //Debug
          system(buf);
       }    
@@ -799,11 +800,10 @@ void checkGPIO(){
 }
 
 void fanControl(){
-    const int cpuFanThreshold = 45; //Minimum temperature for the fan to start spinning 
-    const int temp_fan_min = 50; //Fan begins to spin 
-    const int temp_fan_full = 58; //Fan is at max PWM 
-    const int pwm_fan_min = 51; //Fan minimum PWM 
-    const int pwm_fan_max = 101; //Fan maximum PWM
+    const int temp_fan_min = 50;
+    const int temp_fan_full = 65;
+    const int pwm_fan_min = 65;
+    const int pwm_fan_max = 100;
     
     static int fanSpeed = 0;
 
@@ -815,7 +815,7 @@ void fanControl(){
     fclose(thermal);
     systemp = (int)(millideg / 10.0f) / 100.0f;
     //printf("CPU: %.2fC \n", systemp);
-    if(systemp <= temp_fan_off){
+    if(systemp <= cpuFanThreshold){
         fanSpeed = 0;
     }
     else if(temp_fan_min <= systemp && systemp <= temp_fan_full){
