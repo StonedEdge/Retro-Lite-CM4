@@ -55,6 +55,7 @@ void displayLongText(char text[1200], int xPos, int yPos, IMAGE_LAYER_T *imgLaye
 }
 
 void updateBatteryText(){
+    currentSOC = getSOC();
     char temp[5];
     int xOffset = 3;
     strncpy(temp, batteryText, 5);
@@ -66,7 +67,7 @@ void updateBatteryText(){
     } else if(currentSOC < 9.5){
         xOffset = 2;
     }
-    if(strcmp(batteryText,temp) != 0){
+    if(strcmp(batteryText, temp) != 0){
         if(batteryPercentLayerEN){
             destroyImageLayer(&batteryPercentLayer);
         }
@@ -119,8 +120,12 @@ void batteryMenu(){
         //Remaining cap
         sprintf(textBuffer + strlen(textBuffer), "Remaining Capacity: %dmAh\n", getRemainingCapacity());
 
-        //Time to Empty
-        sprintf(textBuffer + strlen(textBuffer), "Time to Empty: %.2f hours\n", getTimeToEmpty()); 
+        //Time to Full/Empty
+        if(!charging){
+            sprintf(textBuffer + strlen(textBuffer), "Time to Empty: %.2f hours\n", getTimeToEmpty()); 
+        } else {
+            sprintf(textBuffer + strlen(textBuffer), "Time to Full: %.2f hours\n", getTimeToFull()));
+        }
 
         //Charging
         if(charging){
