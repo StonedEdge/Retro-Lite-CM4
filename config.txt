@@ -1,0 +1,29 @@
+# For more options and information see
+# http://rpf.io/configtxt
+# Some settings may impact device functionality. See link above for details
+
+# uncomment to force a specific HDMI mode (here we are forcing 800x480!) on the internal screen 
+#hdmi_group:1=2
+#hdmi_mode:1=82
+hdmi_group:0=2
+hdmi_mode:0=87
+hdmi_cvt:0=800 480 60 6 0 0 0
+hdmi_force_hotplug:0=1
+hdmi_drive:0=1
+dtoverlay=i2s-mmap
+#dtparam=audio=on
+dtparam=i2c_arm=on
+dtparam=i2s=on
+dtparam=spi=on
+gpio=12=pd,dl,op
+dtoverlay=seeed-2mic-voicecard
+
+[pi4]
+# Enable DRM VC4 V3D driver on top of the dispmanx display stack
+dtoverlay=vc4-fkms-v3d
+max_framebuffers=2
+
+[all]
+#dtoverlay=vc4-fkms-v3d
+overscan_scale=1
+dtoverlay=dwc2,dr_mode=host
