@@ -45,17 +45,17 @@ To flash the software to the Retro Lite CM4, you can either download the latest 
 a) Download the latest version of RetroPie for the Raspberry Pi 4/400 here (also compatible with CM4): 
 https://retropie.org.uk/download/ 
 
-b) Install the WM8960 I2S audio amplifier script, by running the script here: 
+b) Run the WM8960 I2S audio amplifier script and install audio drivers:
 https://github.com/StonedEdge/seeed-voicecard
 
-c) Install the latest version of WiringPi here: 
+c) Install the latest version of WiringPi, compatible with both 64/32-bit OS here: 
 https://github.com/StonedEdge/WiringPi
 
-d) sudo apt-get install libpng12-dev - install the libpng library
+d) Add config.txt to the /boot directory (overwrite)
 
-e) cd /home/pi/RetroliteOSD sudo make - compile the Retro Lite CM4 C script
+e) cd /home/pi/RetroliteOSD sudo make - compile the Retro Lite CM4 C code and generate binary
 
-f) Navigate to the /etc directory and add the below lines to allow the code to run at startup to the rc.local file
+f) Navigate to the /etc directory and add the below lines to the rc.local file, to allow the code to run every time at startup 
 
 cd /home/pi/RetroliteOSD
 sudo ./retrolite &
