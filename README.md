@@ -68,7 +68,7 @@ You should now have all the required software installed for the Retro Lite CM4 t
 -------------------------------------------------------------------------------------------------------
 
 ### CAD
-The CAD files for the Retro Lite CM4 are not available or open source at this stage. Please do not ask myself or Dmcke5 to release them yet, as we will not do so. There are plans to release the files at a later date. We've worked hard on the case design and don't want someone stealing our assets!
+The CAD files for the Retro Lite CM4 are now available and open source! Please do give credit where due as a lot of work has gone into these designs.
 
 -------------------------------------------------------------------------------------------------------
 
@@ -83,13 +83,12 @@ c) Retro Lite Controller PCB (Left)
 
 d) Retro Lite Button Daughterboard
 
-Gerbers to be ordered from your board house of choice will be uploaded at a later date.
+Gerbers to be ordered from your board house of choice have now been uploaded! Recommended to use JLCPCB for fast turnaround using their 4-layer service.
 
 -------------------------------------------------------------------------------------------------------
 
 ### BOM (Bill of Materials) 
-Link to the BoM will be added at a later stage. 
-Total BoM to build the Retro Lite CM4 exceeds $250 USD for a single unit, more if you machine the case in aluminum. 
+Preliminary BOMs for all 4 PCBs have been added including cost. You will have to source your own parts however most can be found on Digikey/Mouser.
 
 -------------------------------------------------------------------------------------------------------
 ### New Revision Features
