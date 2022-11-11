@@ -69,6 +69,7 @@ You should now have all the required software installed for the Retro Lite CM4 t
 
 ### CAD
 The CAD files for the Retro Lite CM4 are now available and open source! Please do give credit where due as a lot of work has gone into these designs.
+You can check out my project partner's work here: https://github.com/dmcke5
 
 -------------------------------------------------------------------------------------------------------
 
