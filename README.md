@@ -1,6 +1,16 @@
 ![Image of Retro Lite CM4](https://i.imgur.com/h1mcu5v.jpg)
 # Retro Lite CM4: Raspberry Pi Handheld
 
+## Build Guide
+Coming soon in PDF form. Will walk users through how to build their own portable, including the following topics:
+1) Ordering parts 
+2) Best suppliers to order from 
+3) Total P&L/expected costs 
+4) Assembly guide
+5) Firmware flashing guide
+
+Stay tuned!
+
 ## Description
 The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge. The console is powered by a 4000mAh Li-Po and is designed to run with various software images, including but not limited to RetroPie, Lakka or Batocera, directly from an SD card or via eMMC storage. The project housing was inspired by a Nintendo Switch Lite, but is not a 100% match to the original. The CM4 cannot currently emulate most 32/64-bit consoles released after the PSP or Dreamcast. This means GameCube, Wii and 3DS are currently unplayable until the Foundation releases a newer version of the Compute Module line. wiringPi is now a deprecated GPIO library however does work with arm64 and aarch64, so you can install 64-bit RetroPie if you'd like. 
 
