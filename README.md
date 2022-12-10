@@ -1,9 +1,9 @@
 ![Image of Retro Lite CM4](https://i.imgur.com/h1mcu5v.jpg)
 # Retro Lite CM4: Raspberry Pi Handheld
 
-## Build Guide
-<p align="center">
-![Image of Retro Lite CM4](https://i.imgur.com/qu4UXJB.png)
+## Build Guide  
+ <p align="center">
+   <img src="https://i.imgur.com/qu4UXJB.png"/>
 </p>
 
 A new build guide is coming soon! Stay tuned and watch this space in early 2023 for a full procurement/build guide for the Retro Lite CM4. 
