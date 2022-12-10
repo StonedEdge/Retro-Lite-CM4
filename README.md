@@ -1,8 +1,13 @@
 ![Image of Retro Lite CM4](https://i.imgur.com/h1mcu5v.jpg)
-# Retro Lite CM4: Raspberry Pi Handheld
+<p align="center">
+   # Retro Lite CM4: Raspberry Pi Handheld
+</p>
 
-## Build Guide  
- <p align="center">
+<p align="center">
+   ## Build Guide  
+</p>
+
+<p align="center">
    <img src="https://i.imgur.com/qu4UXJB.png"/>
 </p>
 
@@ -15,10 +20,16 @@ The guide will cover:
 4) Assembly guide
 5) Firmware flashing guide (OSD, Controller and Safe Shutdown Scripts)
 
-## Description
+<p align="center">
+   ## Description
+ </p>
+ 
 The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge. The console is powered by a 4000mAh Li-Po and is designed to run with various software images, including but not limited to RetroPie, Lakka or Batocera, directly from an SD card or via eMMC storage. The project housing was inspired by a Nintendo Switch Lite, but is not a 100% match to the original. The CM4 cannot currently emulate most 32/64-bit consoles released after the PSP or Dreamcast. This means GameCube, Wii and 3DS are currently unplayable until the Foundation releases a newer version of the Compute Module line. wiringPi is now a deprecated GPIO library however does work with arm64 and aarch64, so you can install 64-bit RetroPie if you'd like. 
 
-## Features
+<p align="center">
+   ## Features
+ </p>
+ 
 - Machined aluminum 6061 housing (green/purple), custom machined and anodized by Dmcke5
 - Raspberry Pi 4 SoC: Broadcom BCM2711 quad-core Cortex-A72 @ 1.5GHz (ARM CPU overclockable to 2.1GHz, GPU overclockable to 850MHz)
 - 2GB of LPDDR4-3200 SDRAM
@@ -49,9 +60,14 @@ The Retro Lite CM4 is a joint project between Dmcke5 and StonedEdge. The console
 Click the link below to view a more detailed buildlog of the Retro Lite CM4: 
 https://bitbuilt.net/forums/index.php?threads/retro-lite-cm4-a-stonededge-and-dmcke5-collaboration.3934/
 
-## Requirements to Build the Retro Lite CM4
+<p align="center">
+   ## Requirements to Build the Retro Lite CM4
+</p>
 
-### Code 
+<p align="center">
+   ### Code 
+</p>
+
 Code has now been split into various header files and the retrolite.c code has now been made easier to read and condensed for the end-user. Code required to complete the handheld includes an ATtiny84 monitor script, which can be flashed via the 1.27mm pitch 6 pin header on the main Retro Lite PCB with an Arduino or similar programmer. Code for the i2s audio amplifier, fuel gauge and OSD functionality can be compiled directly on the CM4 module from the command line. Current code is unfinished as of January 2022, however we are pushing bug fixes when we find them - expect a fully functioning RetroPie image to be shared in the future from this repository (actually, just found out this is not allowed due to the licensing of certain emulators, so will create install scripts at a later date). 
 
 To flash the software to the Retro Lite CM4, you can either download the latest RetroPie Retro Lite custom image, or follow the below steps to get up and running. Plan is to eventually put this into a single script. I have not currently tested our firmware on images other than RetroPie, however I assume other images should also work fine. 
