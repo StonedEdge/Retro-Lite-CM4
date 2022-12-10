@@ -3,7 +3,7 @@
 
 ## Build Guide
 <p align="center">
-  <src="https://i.imgur.com/qu4UXJB.png">
+![Image of Retro Lite CM4](https://i.imgur.com/qu4UXJB.png)
 </p>
 
 A new build guide is coming soon! Stay tuned and watch this space in early 2023 for a full procurement/build guide for the Retro Lite CM4. 
