@@ -122,8 +122,12 @@ c) DSI 5.5" display (struggle to know of a way to get this working currently on 
 Feel free to make a pull request with any changes you would like seen to the handheld. 
 
 -------------------------------------------------------------------------------------------------------
+### Optional Docking Station 
+![Image of Retro Lite CM4](https://i.imgur.com/tE0yQ3K.png)
 
+I am currently working on a small docking station for this project that uses an OLED display to display various cool things. It's designed to work with RetroPie and use a RP2040 Microcontroller. I will upload the code and further instructions on how to get it working over USB with the CM4 at a later date. 
 
+-------------------------------------------------------------------------------------------------------
 ### Contributors 
 I'd like to thank these people in no particular order for the awesome work you have done to help me complete this project. 
 
