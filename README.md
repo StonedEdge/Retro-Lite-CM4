@@ -123,9 +123,9 @@ Feel free to make a pull request with any changes you would like seen to the han
 
 -------------------------------------------------------------------------------------------------------
 ### Optional Docking Station 
-![Image of Retro Lite CM4](https://i.imgur.com/tE0yQ3K.png)
+![Image of Retro Lite CM4](https://i.imgur.com/Hp6L12B.png)
 
-I am currently working on a small docking station for this project that uses an OLED display to display various cool things. It's designed to work with RetroPie and use a RP2040 Microcontroller. I will upload the code and further instructions on how to get it working over USB with the CM4 at a later date. 
+I am currently working on a small docking station for this project that uses an OLED display to display various cool things, as well as charge the console + passthrough HDMI video. It's designed to work with RetroPie and use a RP2040 microcontroller, written in C (Pico) and Python (CM4). I will upload the code and further instructions on how to get it working over USB with the CM4 at a later date. The aim is to keep this cross compatible with several different projects however the dock integrates the OLED screen into the custom dock PCB. 
 
 -------------------------------------------------------------------------------------------------------
 ### Contributors 
