@@ -824,29 +824,30 @@ void checkGPIO() {
   }
 }
 
-void fanControl() {
-  const int temp_fan_min = 50;
-  const int temp_fan_full = 70;
-  const int pwm_fan_min = 30;
-  const int pwm_fan_max = 101;
+void fanControl(){
+    const int temp_fan_min = 50;
+    const int temp_fan_full = 70;
+    const int pwm_fan_min = 30;
+    const int pwm_fan_max = 101;
+    
+    static int fanSpeed = 0;
 
-  static int fanSpeed = 0;
+    float millideg;
+    FILE *thermal;
 
-  float millideg;
-  FILE * thermal;
-
-  thermal = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-  fscanf(thermal, "%f", & millideg);
-  fclose(thermal);
-  systemp = (int)(millideg / 10.0 f) / 100.0 f;
-  //printf("CPU: %.2fC \n", systemp);
-  if (systemp <= cpuFanThreshold) {
-    fanSpeed = 0;
-  } else if (temp_fan_min <= systemp && systemp <= temp_fan_full) {
-    fanSpeed = (pwm_fan_min * (temp_fan_full - systemp) + pwm_fan_max * (systemp - temp_fan_min)) / ((temp_fan_full - temp_fan_min));
-  } else if (systemp > temp_fan_full) {
-    fanSpeed = pwm_fan_max;
-  }
-  pwmWrite(fan_pwm, fanSpeed);
-
+    thermal = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+    fscanf(thermal, "%f", &millideg);
+    fclose(thermal);
+    systemp = (int)(millideg / 10.0f) / 100.0f;
+    //printf("CPU: %.2fC \n", systemp);
+    if(systemp <= cpuFanThreshold){
+        fanSpeed = 0;
+    }
+    else if(temp_fan_min <= systemp && systemp <= temp_fan_full){
+        fanSpeed = (pwm_fan_min*(temp_fan_full-systemp) + pwm_fan_max*(systemp-temp_fan_min))/((temp_fan_full-temp_fan_min));
+    }
+    else if (systemp > temp_fan_full) {
+        fanSpeed = pwm_fan_max;
+    }
+    pwmWrite(fan_pwm, fanSpeed);
 }
