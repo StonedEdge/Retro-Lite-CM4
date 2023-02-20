@@ -826,7 +826,7 @@ void checkGPIO() {
 
 void fanControl(){
     const int temp_fan_min = 50;
-    const int temp_fan_full = 70;
+    const int temp_fan_full = 75;
     const int pwm_fan_min = 30;
     const int pwm_fan_max = 101;
     
