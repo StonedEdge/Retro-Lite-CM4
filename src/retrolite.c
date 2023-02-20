@@ -750,8 +750,8 @@ void checkGPIO() {
       snprintf(buf, sizeof(buf), "amixer -M set Speaker %d%%", 90); //Playback
       //printf("%s\n", buf); //Debug
       system(buf);
+      hpd_change = false;
     }
-    hpd_change = false;
   }
 
   if (hpd_change == false) {
@@ -759,8 +759,8 @@ void checkGPIO() {
       snprintf(buf, sizeof(buf), "amixer -M set Speaker %d%%", 0);
       //printf("%s\n", buf); //Debug
       system(buf);
+      hpd_change = true;
     }
-    hpd_change = true;
   }
 
   //bool volumeChange = false;
