@@ -155,7 +155,6 @@ void batteryMenu(){
 }
 
 void mainMenu(){
-    char textBuffer[1200];
     int menuX = (displayX /2) - (overlayImageX / 2);
     int menuY = (displayY /2) - (overlayImageY / 2);
     int textY = menuY + 35;
