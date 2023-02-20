@@ -411,7 +411,7 @@ void controllerInterface() {
       menuActive = 0;
       printf("Menu Disabled\n");
     }
-    if (!osKeyboard) {
+    if (!osKeyboard && menuActive != 1) {
       if (value == osKeyboardUp) {
         //Menu Selection Up
         if (menuSelected > 1 && menuSelected != 7) {
