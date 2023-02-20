@@ -124,19 +124,17 @@ void batteryMenu(){
 
 	//Time to Full/Empty
 	if(!charging && getSOC() == 100){
-    	sprintf(textBuffer + strlen(textBuffer), "Battery Fully Charged\n");
+    	    sprintf(textBuffer + strlen(textBuffer), "Battery Fully Charged\n");
 	} 
 
 	else if(!charging){
-    	TTEhours = (int)getTimeToEmpty();
-    	TTEminutes = (int)((getTimeToEmpty() - TTEhours) * 60);
-    	sprintf(textBuffer + strlen(textBuffer), "Time to Empty: %i:%i\n", TTEhours, TTEminutes); 
-	}	
-
-	else {
-    	TTEhours = (int)getTimeToFull();
-    	TTEminutes = (int)((getTimeToFull() - TTEhours) * 60);
-    	sprintf(textBuffer + strlen(textBuffer), "Time to Full: %i:%i\n", TTEhours, TTEminutes); 
+    	    TTEhours = (int)getTimeToEmpty();
+    	    TTEminutes = (int)((getTimeToEmpty() - TTEhours) * 60);
+    	    sprintf(textBuffer + strlen(textBuffer), "Time to Empty: %i:%i\n", TTEhours, TTEminutes); 
+	} else {
+    	    TTEhours = (int)getTimeToFull();
+    	    TTEminutes = (int)((getTimeToFull() - TTEhours) * 60);
+    	    sprintf(textBuffer + strlen(textBuffer), "Time to Full: %i:%i\n", TTEhours, TTEminutes); 
 	}
 
         //Charging
