@@ -98,6 +98,8 @@ void batteryMenu(){
     int menuY = (displayY /2) - (overlayImageY / 2);
     int textY = menuY + 73;
     int textX = menuX + 88;
+    int TTEhours = 0;
+    int TTEminutes =0; 
 
     if(!menuLayerEN){
         //Background
@@ -122,9 +124,13 @@ void batteryMenu(){
 
         //Time to Full/Empty
         if(!charging){
-            sprintf(textBuffer + strlen(textBuffer), "Time to Empty: %.2f hours\n", getTimeToEmpty()); 
+            TTEhours = (int)getTimeToEmpty();
+            TTEminutes = (int)((getTimeToEmpty() - TTEhours) * 60);
+            sprintf(textBuffer + strlen(textBuffer), "Time to Empty: %i:%i\n", TTEhours, TTEminutes); 
         } else {
-            sprintf(textBuffer + strlen(textBuffer), "Time to Full: %.2f hours\n", getTimeToFull()));
+            TTEhours = (int)getTimeToFull();
+            TTEminutes = (int)(getTimeToFull() - TTEhours) * 60;
+            sprintf(textBuffer + strlen(textBuffer), "Time to Full: %i:%i\n", TTEhours, TTEminutes); 
         }
 
         //Charging
