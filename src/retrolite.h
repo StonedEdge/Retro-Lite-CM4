@@ -14,7 +14,7 @@
 
 volatile bool run = true;
 
-//I2C Registers
+//I2C MAX17055 Registers
 static int Status = 0x00;
 static int VCell = 0x09;
 //static int AvgVCell = 0x19;
@@ -23,6 +23,7 @@ static int Current = 0x0A;
 static int RepSOC = 0x06;
 static int RepCap = 0x05;
 static int TimeToEmpty = 0x11;
+static int TimeToFull = 0x20;
 static int DesignCap = 0x18;
 
 //GPIO Pins
@@ -188,6 +189,7 @@ int getRemainingCapacity();
 float getInstantaneousCurrent();
 float getInstantaneousVoltage();
 float getTimeToEmpty();
+float getTimeToFull();
 void max17055Init();
 long map(long x, long in_min, long in_max, long out_min, long out_max);
 void settingValueChanged(int value);
