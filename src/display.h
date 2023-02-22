@@ -130,11 +130,19 @@ void batteryMenu(){
 	else if(!charging){
     	    TTEhours = (int)getTimeToEmpty();
     	    TTEminutes = (int)((getTimeToEmpty() - TTEhours) * 60);
-    	    sprintf(textBuffer + strlen(textBuffer), "Time to Empty: %i:%i\n", TTEhours, TTEminutes); 
+	    if(TTEminutes < 10){
+	        sprintf(textBuffer + strlen(textBuffer), "Time to Empty: %i:0%i\n", TTEhours, TTEminutes);
+	    } else {
+		sprintf(textBuffer + strlen(textBuffer), "Time to Empty: %i:%i\n", TTEhours, TTEminutes);
+	    }
 	} else {
     	    TTEhours = (int)getTimeToFull();
     	    TTEminutes = (int)((getTimeToFull() - TTEhours) * 60);
-    	    sprintf(textBuffer + strlen(textBuffer), "Time to Full: %i:%i\n", TTEhours, TTEminutes); 
+	    if(TTEminutes < 10){
+    	        sprintf(textBuffer + strlen(textBuffer), "Time to Full: %i:0%i\n", TTEhours, TTEminutes);
+	    } else {
+		sprintf(textBuffer + strlen(textBuffer), "Time to Full: %i:%i\n", TTEhours, TTEminutes);
+	    }
 	}
 
         //Charging
