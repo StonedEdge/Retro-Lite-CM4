@@ -6,7 +6,6 @@ float getInstantaneousVoltage();
 float getTimeToEmpty();
 void max17055Init();
 
-int vr_mv = 3880;
 
 /*
  * This macro converts empty voltage target (VE) and recovery voltage (VR)
@@ -15,8 +14,8 @@ int vr_mv = 3880;
  * VE ranges from 0 to 5110mV, and VR ranges from 0 to 5080mV.
  */
 
-#define MAX17055_VEMPTY_REG(ve_mv, vr_mv)\
-  ((((ve_mv * 1000) / 10) << 7) | (vr_mv / 40))
+#define MAX17055_VEMPTY_REG(ve_mv, vr_mv) \
+    (((ve_mv / 10) << 7) | (vr_mv / 40))
 
 float getSOC() {
   int SOC_raw = wiringPiI2CReadReg16(I2CDevice, RepSOC);
