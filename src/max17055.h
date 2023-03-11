@@ -5,6 +5,7 @@ float getInstantaneousCurrent();
 float getInstantaneousVoltage();
 float getTimeToEmpty();
 void max17055Init();
+float getTimeToFull();
 
 
 /*
