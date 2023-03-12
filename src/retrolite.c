@@ -677,7 +677,7 @@ void saveValues() {
     printf("Error Logging Values! \n");
     return;
   } else {
-    fprintf(fptr, "%d %f %d %d %d %d", batteryCapacity, lowVoltageThreshold, cpuFanThreshold, brightness, volume, darkMode);
+    fprintf(fptr, "%d %.1f %d %d %d %d", batteryCapacity, lowVoltageThreshold, cpuFanThreshold, brightness, volume, darkMode);
   }
   fclose(fptr);
 }
