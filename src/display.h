@@ -270,7 +270,7 @@ void settingsMenu(){
     sprintf(textBuffer + strlen(textBuffer), "Battery Capacity: %dmAh \n", batteryCapacity);
 
     //Fan Temp Threshold
-    sprintf(textBuffer + strlen(textBuffer), "Fan Start Temperature: %dc\n", cpuFanThreshold);
+    sprintf(textBuffer + strlen(textBuffer), "Desired System Temperature: %dc\n", cpuFanThreshold);
 
     //Display Select
     if(displaySelect == 0){
