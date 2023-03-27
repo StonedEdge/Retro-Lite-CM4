@@ -824,30 +824,45 @@ void checkGPIO() {
   }
 }
 
-void fanControl(){
-    const int temp_fan_min = 50;
-    const int temp_fan_full = 75;
-    const int pwm_fan_min = 30;
-    const int pwm_fan_max = 101;
-    
-    static int fanSpeed = 0;
+const int temp_fan_min = 50;
+const int temp_fan_full = 75;
+const int pwm_fan_min = 30;
+const int pwm_fan_max = 101;
+const int hysteresis = 5;
+const float Kp = 1;
+const float Ki = 0.03;
+const float Kd = 0.1;
 
+static float lastError = 0;
+static float integral = 0;
+
+void fanControl() {
     float millideg;
     FILE *thermal;
 
     thermal = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
     fscanf(thermal, "%f", &millideg);
     fclose(thermal);
-    systemp = (int)(millideg / 10.0f) / 100.0f;
-    //printf("CPU: %.2fC \n", systemp);
-    if(systemp <= cpuFanThreshold){
+    float systemp = (int)(millideg / 10.0f) / 100.0f;
+
+    float error = systemp - cpuFanThreshold;
+    integral += error;
+    float derivative = error - lastError;
+    lastError = error;                                                                                     
+    float pid = Kp * error + Ki * integral + Kd * derivative;
+
+    if (systemp <= cpuFanThreshold + hysteresis) {
         fanSpeed = 0;
     }
-    else if(temp_fan_min <= systemp && systemp <= temp_fan_full){
-        fanSpeed = (pwm_fan_min*(temp_fan_full-systemp) + pwm_fan_max*(systemp-temp_fan_min))/((temp_fan_full-temp_fan_min));
+    else if (temp_fan_min <= systemp - hysteresis && systemp - hysteresis <= temp_fan_full) {
+        fanSpeed = (pwm_fan_min*(temp_fan_full-systemp+hysteresis) + pwm_fan_max*(systemp-hysteresis-temp_fan_min))/((temp_fan_full-temp_fan_min));
     }
-    else if (systemp > temp_fan_full) {
+    else if (systemp - hysteresis > temp_fan_full) {
         fanSpeed = pwm_fan_max;
     }
+
+    fanSpeed += (int)pid;
+    fanSpeed = fmaxf(fminf(fanSpeed, pwm_fan_max), 0);
+
     pwmWrite(fan_pwm, fanSpeed);
 }
