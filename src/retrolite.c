@@ -825,13 +825,13 @@ void checkGPIO() {
 }
 
 const int temp_fan_min = 50;
-const int temp_fan_full = 75;
-const int pwm_fan_min = 30;
-const int pwm_fan_max = 101;
+const int temp_fan_full = 65;
+const int pwm_fan_min = 25;
+const int pwm_fan_max = 75;
 const int hysteresis = 5;
-const float Kp = 1;
-const float Ki = 0.03;
-const float Kd = 0.1;
+const float Kp = 65;
+const float Ki = 0.65;
+const float Kd = 0;
 
 static float lastError = 0;
 static float integral = 0;
