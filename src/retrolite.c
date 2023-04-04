@@ -4,53 +4,29 @@
 
 //#include <iostream>
 #include <inttypes.h>
-
 #include <assert.h>
-
 #include <stdbool.h>
-
 #include <stdio.h>
-
 #include <limits.h>
-
 #include <stdlib.h>
-
 #include <unistd.h>
-
 #include <time.h>
-
 #include <strings.h>
-
 #include "font.h"
-
 #include "imageGraphics.h"
-
 #include "imageLayer.h"
-
 #include "loadpng.h"
-
 #include <unistd.h>
-
 #include <math.h>
-
 #include <SDL.h>
-
 #include <fcntl.h>
-
 #include "bcm_host.h"
-
 #include <wiringPiI2C.h> //sudo apt-get install wiringpi
-
 #include <wiringPi.h>
-
 #include <wiringSerial.h>
-
 #include <softPwm.h>
-
 #include "retrolite.h"
-
 #include "display.h"
-
 #include "max17055.h"
 
 int main() {
