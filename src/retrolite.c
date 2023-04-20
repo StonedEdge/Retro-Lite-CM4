@@ -372,7 +372,7 @@ void checkResolution() {
 void controllerInterface() {
   int value;
 
-  while (value != controllerError)//while (serialDataAvail(controllerSerial)) {
+  while (value != controllerError) {//while (serialDataAvail(controllerSerial)) {
     value = getControllerData();
     //value = serialGetchar(controllerSerial);
     if (value == brightnessUp) {
