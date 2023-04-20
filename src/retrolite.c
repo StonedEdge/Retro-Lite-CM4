@@ -317,6 +317,22 @@ long map(long x, long in_min, long in_max, long out_min, long out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+int getControllerData() { 
+  if ((controllerSerial = serialOpen("/dev/ttyACM0", 19200)) < 0) {
+    controllerDisconnected = true;
+    return controllerError;
+  } else {
+    if(controllerDisconnected){
+      controllerDisconnected = false;
+      serialFlush(controllerSerial); // Flush all missed inputs
+    }
+    if (serialDataAvail(controllerSerial)) {
+      return serialGetchar(controllerSerial);
+    } else {
+      return controllerError;
+  }
+}
+
 void checkResolution() {
   FILE * resolution;
   char path[35];
@@ -356,8 +372,9 @@ void checkResolution() {
 void controllerInterface() {
   int value;
 
-  while (serialDataAvail(controllerSerial)) {
-    value = serialGetchar(controllerSerial);
+  while (value != controllerError)//while (serialDataAvail(controllerSerial)) {
+    value = getControllerData();
+    //value = serialGetchar(controllerSerial);
     if (value == brightnessUp) {
       if (brightness <= 90) {
         brightness += 10;
