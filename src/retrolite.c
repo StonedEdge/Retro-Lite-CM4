@@ -320,6 +320,7 @@ long map(long x, long in_min, long in_max, long out_min, long out_max) {
 int getControllerData() { 
   if ((controllerSerial = serialOpen("/dev/ttyACM0", 19200)) < 0) {
     controllerDisconnected = true;
+    serialClose(controllerSerial);
     return controllerError;
   } else {
     if(controllerDisconnected){
