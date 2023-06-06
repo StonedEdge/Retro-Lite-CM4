@@ -18,6 +18,8 @@ if [ "$_IP" ]; then
 fi
 
 sudo python3 /home/pi/splash_statistics.py &
+
+# Reseet USB subsystem for proper hub enumeration 
 sudo sh -c 'echo 0 > /sys/bus/usb/devices/usb1/authorized'
 sudo sh -c 'echo 1 > /sys/bus/usb/devices/usb1/authorized'
 
@@ -25,5 +27,4 @@ cd /home/pi/RetroliteOSD
 sudo ./retrolite &
 sudo ./hdmi_switch.sh & 
 
- 
 exit 0
