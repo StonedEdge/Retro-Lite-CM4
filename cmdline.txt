@@ -1,0 +1,1 @@
+console=tty3 root=PARTUUID=cb1c38bb-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait loglevel=3 consoleblank=0 plymouth.enable=0 quiet vt.global_cursor_default=0 plymouth.enable=0 dwc_otg.fiq_fsm_mask=0x3 usbcore.autosuspend=-1
