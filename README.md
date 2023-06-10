@@ -124,13 +124,17 @@ Feel free to make a pull request with any changes you would like seen to the han
 -------------------------------------------------------------------------------------------------------
 
 ### FAQs
-Q: How can I get my hands one of these handhelds? Do you sell 
+Q: How can I get my hands one of these handhelds? Do you sell them? 
 
 A: I am not currently selling kits on this handheld (nor do I plan to for the forseeable future), but I do offer commissions on occassion via my social media. DM me for details. 
 
 Q: Why dont you use a 5.5" display from a Switch Lite? 
 
 A: MIPI reverse engineering is not simple not trivial to a hobbyist like myself. 
+
+Q: Why are your commissions ludicrously priced?
+
+A: Building one off handhelds for people is expensive. Labor & parts dont come cheap either. I'd recommend you build one yourself using the assets from this GitHub or just buy a mass produced emulation handheld from Aliexpress. 
 
 ### Optional Docking Station 
 ![Image of Retro Lite CM4](https://i.imgur.com/LP2ecQt.png)
