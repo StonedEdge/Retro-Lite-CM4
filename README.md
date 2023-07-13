@@ -142,7 +142,7 @@ A: Building one off handhelds for people is expensive. Labor & parts dont come c
 Source code available here:
 https://github.com/StonedEdge/Retro-Lite-CM4-Dock
 
-I am currently working on a small docking station for this project that uses an OLED display to display various cool things, as well as charge the console + passthrough HDMI video. It's designed to work with RetroPie and use a RP2040 microcontroller, written in C (Pico) and Python (CM4). I will upload the code and further instructions on how to get it working over USB with the CM4 at a later date. The aim is to keep this cross compatible with several different projects however the dock integrates the OLED screen into the custom dock PCB. 
+The docking station is now completed! It's designed to work with RetroPie and use a RP2040 microcontroller, written in C (Pico) and Python (CM4). Feel free to build one if you'd like! 
 
 -------------------------------------------------------------------------------------------------------
 ### Contributors 
@@ -152,3 +152,4 @@ I'd like to thank these people in no particular order for the awesome work you h
 * YveltalGriffin/Mackie-Kannard Smith, for suggesting various hardware changes and reviews to PCB/schematics + GitHub bugs. His help was invaluable in learning new things about PCB design 
 * Juckett D, for creating the Aegis CM4 and offering tips and tricks along the way. Check out his work here and awesome CM4 handheld(s): https://github.com/juckettd
 * Aurelio Manarra, for always helping me out with my non EE questions and various other things ᕕ( ᐛ )ᕗ
+* Bill, for helping me with the docking station code & bug fixes
