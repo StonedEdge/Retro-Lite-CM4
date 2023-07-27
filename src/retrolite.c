@@ -317,24 +317,6 @@ long map(long x, long in_min, long in_max, long out_min, long out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-int getControllerData() {
-  if ((controllerSerial = serialOpen("/dev/ttyACM0", 19200)) < 0) {
-    controllerDisconnected = true;
-    serialClose(controllerSerial);
-    return controllerError;
-  } else {
-    if (controllerDisconnected) {
-      controllerDisconnected = false;
-      serialFlush(controllerSerial); // Flush all missed inputs
-    }
-    if (serialDataAvail(controllerSerial)) {
-      return serialGetchar(controllerSerial);
-    } else {
-      return controllerError;
-    }
-  }
-}
-
 void checkResolution() {
   FILE * resolution;
   char path[35];
@@ -371,13 +353,11 @@ void checkResolution() {
   pclose(resolution);
 }
 
-int value = 0;
-
 void controllerInterface() {
+  int value;
 
-  while (value != controllerError) { 
-    value = getControllerData();
-    //value = serialGetchar(controllerSerial);
+  while (serialDataAvail(controllerSerial)) {
+    value = serialGetchar(controllerSerial);
     if (value == brightnessUp) {
       if (brightness <= 90) {
         brightness += 10;
@@ -612,9 +592,9 @@ void controllerInterface() {
         strncpy(bar_Icon, "./brightnessIcons/brightness_90.png", 60);
       } else if (brightness == 100) {
         strncpy(bar_Icon, "./brightnessIcons/brightness_100.png", 60);
-        }
       }
-   }
+    }
+  }
 }
 
 void loadValues() {
