@@ -533,6 +533,35 @@ void joystickBuildLUT(byte output[350], int minIn, int midIn, int maxIn, int ear
   
   for(int i = 0; i < 350; i++){
     if(i < shiftedMid){
+      if(i > shiftedMin + earlyStop){
+        temp = map(i, shiftedMin, shiftedMid - deadBand, 0, 127);
+      } else {
+        temp = 0;
+      }
+    } else {
+      if(i < shiftedMax - earlyStop){
+        temp = map(i, shiftedMid + deadBand, shiftedMax, 127, 254);
+      } else {
+        temp = 254;
+      }
+    }
+    if(i < shiftedMid + deadBand && i > shiftedMid - deadBand){
+      temp = 127;
+    }
+    output[i] = temp;
+  }
+}
+
+//OLD
+/*void joystickBuildLUT(byte output[350], int minIn, int midIn, int maxIn, int earlyStop, int deadBand){ //This function builds a lookup table for the given axis.
+  //Shift all joystick values to a base of zero. All values are halved due to ram limitations on the 32u4.
+  int shiftedMin = 0;
+  int shiftedMid = (midIn - minIn) /2;
+  int shiftedMax = (maxIn - minIn) /2;
+  int temp;
+  
+  for(int i = 0; i < 350; i++){
+    if(i < shiftedMid){
       temp = map(i, shiftedMin + earlyStop, shiftedMid - deadBand, 0, 127);
       if(temp < 0){
         temp = 0;
@@ -552,7 +581,7 @@ void joystickBuildLUT(byte output[350], int minIn, int midIn, int maxIn, int ear
     }
     output[i] = temp;
   }
-}
+}*/
 
 void joystickInput(){
   int var = 0;
