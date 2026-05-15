@@ -1,19 +1,30 @@
-/*
- * Retro Lite QM-C64
+/* 
+ * Retro Lite QM-C64 
  * Simplified ATMEGA32u4 USB Gamepad + Mouse Firmware
  *
- * Features:
+ * Features
+ * --------
  * - Dual analog sticks
  * - 13 buttons
  * - POV Hat Dpad
  * - Mouse emulation
  * - EEPROM joystick calibration
  *
- * Removed from Retro Lite CM4:
- * - Serial communications
- * - Menu system
- * - Keyboard emulation
- * - Brightness controls
+ * Calibration
+ * -----------
+ * Hold SELECT + R3 to enter calibration mode
+ *
+ * STEP 1:
+ * Centre both sticks
+ *
+ * STEP 2:
+ * Press A to capture centre point
+ *
+ * STEP 3:
+ * Rotate sticks fully in all directions
+ *
+ * STEP 4:
+ * Press A again to save calibration
  */
 
 #include <Joystick.h>
@@ -21,7 +32,7 @@
 #include <EEPROM.h>
 
 // ======================================================
-// BUTTONS
+// BUTTON DEFINITIONS
 // ======================================================
 
 const byte buttonCount = 13;
@@ -33,6 +44,10 @@ byte buttonPins[buttonCount] = {
 byte dpadPins[4] = {
   8,11,9,10
 };
+
+// ======================================================
+// BUTTON STATES
+// ======================================================
 
 byte dpadPinsState[4];
 byte lastButtonState[buttonCount];
@@ -53,6 +68,7 @@ const int rightJoyY = A0;
 
 const bool invertLeftY  = false;
 const bool invertLeftX  = false;
+
 const bool invertRightY = true;
 const bool invertRightX = true;
 
@@ -61,6 +77,7 @@ const int deadBandRight = 10;
 
 const int earlyLeftX  = 30;
 const int earlyLeftY  = 30;
+
 const int earlyRightX = 30;
 const int earlyRightY = 30;
 
@@ -72,10 +89,10 @@ boolean mouseEnabled = false;
 
 int mouseDivider = 8;
 
-unsigned long mouseTimer;
+unsigned long mouseTimer = 0;
 int mouseInterval = 10;
 
-unsigned long mouseModeTimer;
+unsigned long mouseModeTimer = 0;
 boolean mouseModeTimerStarted = false;
 
 // ======================================================
@@ -86,7 +103,7 @@ boolean calibrationMode = false;
 int calibrationStep = 1;
 
 // ======================================================
-// JOYSTICK
+// USB GAMEPAD
 // ======================================================
 
 Joystick_ Joystick(
@@ -101,7 +118,7 @@ Joystick_ Joystick(
 );
 
 // ======================================================
-// JOYSTICK CALIBRATION VALUES
+// DEFAULT CALIBRATION VALUES
 // ======================================================
 
 int minLeftX  = 330;
@@ -121,11 +138,12 @@ int maxRightX = 780;
 int midRightX = 525;
 
 // ======================================================
-// LUTS
+// LOOKUP TABLES
 // ======================================================
 
 byte leftXLUT[350];
 byte leftYLUT[350];
+
 byte rightXLUT[350];
 byte rightYLUT[350];
 
@@ -135,24 +153,31 @@ byte rightYLUT[350];
 
 void setup() {
 
+  // USB axis ranges
   Joystick.setXAxisRange(0, 254);
   Joystick.setYAxisRange(0, 254);
+
   Joystick.setZAxisRange(0, 254);
   Joystick.setRxAxisRange(0, 254);
 
+  // Start USB HID devices
   Joystick.begin(false);
-
   Mouse.begin();
 
+  // Configure button inputs
   for(int i = 0; i < buttonCount; i++) {
     pinMode(buttonPins[i], INPUT_PULLUP);
   }
 
+  // Configure dpad inputs
   for(int i = 0; i < 4; i++) {
     pinMode(dpadPins[i], INPUT_PULLUP);
   }
 
+  // Load calibration from EEPROM
   eepromLoad();
+
+  // Build LUTs
   rebuildLUTs();
 }
 
@@ -164,25 +189,49 @@ void loop() {
 
   buttonRead();
 
-  // Enter calibration mode
-  if(lastButtonState[0] && lastButtonState[3]) {
+  // ====================================================
+  // ENTER CALIBRATION MODE
+  // SELECT + R3
+  // ====================================================
+
+  if(lastButtonState[8] && lastButtonState[12]) {
+
     calibrationMode = true;
+    calibrationStep = 1;
+
+    delay(1000);
   }
+
+  // ====================================================
+  // NORMAL MODE
+  // ====================================================
 
   if(!calibrationMode) {
 
     joypadButtons();
+
     joystickInput();
+
     dPadInput();
 
     Joystick.sendState();
 
-  } else {
+  }
+
+  // ====================================================
+  // CALIBRATION MODE
+  // ====================================================
+
+  else {
 
     joystickCalibration();
   }
 
-  // Mouse mode toggle
+  // ====================================================
+  // MOUSE MODE TOGGLE
+  // Hold R3 for 2 seconds
+  // ====================================================
+
   if(lastButtonState[12]) {
 
     if(!mouseModeTimerStarted) {
@@ -205,7 +254,10 @@ void loop() {
     mouseModeTimerStarted = false;
   }
 
-  // Mouse update
+  // ====================================================
+  // MOUSE UPDATE
+  // ====================================================
+
   if(mouseEnabled) {
 
     if(mouseTimer + mouseInterval < millis()) {
@@ -223,6 +275,7 @@ void loop() {
 
 void buttonRead() {
 
+  // Buttons
   for(int i = 0; i < buttonCount; i++) {
 
     int input = !digitalRead(buttonPins[i]);
@@ -232,6 +285,7 @@ void buttonRead() {
     }
   }
 
+  // Dpad
   for(int i = 0; i < 4; i++) {
 
     int input = !digitalRead(dpadPins[i]);
@@ -267,6 +321,7 @@ void dPadInput() {
 
   int angle = -1;
 
+  // UP
   if(dpadPinsState[0]) {
 
     if(dpadPinsState[1]) {
@@ -280,6 +335,7 @@ void dPadInput() {
     }
   }
 
+  // DOWN
   else if(dpadPinsState[2]) {
 
     if(dpadPinsState[1]) {
@@ -293,10 +349,12 @@ void dPadInput() {
     }
   }
 
+  // RIGHT
   else if(dpadPinsState[1]) {
     angle = 90;
   }
 
+  // LEFT
   else if(dpadPinsState[3]) {
     angle = 270;
   }
@@ -312,18 +370,22 @@ void joystickInput() {
 
   int var;
 
+  // RIGHT Y
   var = readJoystick(rightJoyY, invertRightY);
   var = (var - minRightY) / 2;
   Joystick.setRxAxis(rightYLUT[var]);
 
+  // RIGHT X
   var = readJoystick(rightJoyX, invertRightX);
   var = (var - minRightX) / 2;
   Joystick.setZAxis(rightXLUT[var]);
 
+  // LEFT Y
   var = readJoystick(leftJoyY, invertLeftY);
   var = (var - minLeftY) / 2;
   Joystick.setYAxis(leftYLUT[var]);
 
+  // LEFT X
   var = readJoystick(leftJoyX, invertLeftX);
   var = (var - minLeftX) / 2;
   Joystick.setXAxis(leftXLUT[var]);
@@ -337,7 +399,7 @@ void mouseControl() {
 
   int var;
 
-  // Y Axis
+  // Y AXIS
   var = readJoystick(leftJoyY, invertLeftY);
   var = (var - minLeftY) / 2;
   var = leftYLUT[var];
@@ -345,7 +407,7 @@ void mouseControl() {
 
   int yMove = var / mouseDivider;
 
-  // X Axis
+  // X AXIS
   var = readJoystick(leftJoyX, invertLeftX);
   var = (var - minLeftX) / 2;
   var = leftXLUT[var];
@@ -353,9 +415,10 @@ void mouseControl() {
 
   int xMove = var / mouseDivider;
 
+  // Move mouse
   Mouse.move(xMove, yMove, 0);
 
-  // Left Click
+  // Left click
   if(lastButtonState[6]) {
 
     if(!Mouse.isPressed(MOUSE_LEFT)) {
@@ -369,7 +432,7 @@ void mouseControl() {
     }
   }
 
-  // Right Click
+  // Right click
   if(lastButtonState[9]) {
 
     if(!Mouse.isPressed(MOUSE_RIGHT)) {
@@ -385,7 +448,252 @@ void mouseControl() {
 }
 
 // ======================================================
-// EEPROM
+// JOYSTICK CALIBRATION
+// ======================================================
+
+void joystickCalibration() {
+
+  buttonRead();
+
+  // ====================================================
+  // STEP 1
+  // WAIT FOR CENTERED STICKS
+  // ====================================================
+
+  if(calibrationStep == 1) {
+
+    int lx = readJoystick(leftJoyX, invertLeftX);
+    int ly = readJoystick(leftJoyY, invertLeftY);
+
+    int rx = readJoystick(rightJoyX, invertRightX);
+    int ry = readJoystick(rightJoyY, invertRightY);
+
+    bool centered =
+      abs(lx - 512) < 40 &&
+      abs(ly - 512) < 40 &&
+      abs(rx - 512) < 40 &&
+      abs(ry - 512) < 40;
+
+    // Press A to continue
+    if(centered && lastButtonState[1]) {
+
+      midLeftX  = lx;
+      midLeftY  = ly;
+
+      midRightX = rx;
+      midRightY = ry;
+
+      calibrationStep = 2;
+
+      delay(500);
+    }
+  }
+
+  // ====================================================
+  // STEP 2
+  // INITIALIZE MIN/MAX
+  // ====================================================
+
+  else if(calibrationStep == 2) {
+
+    minLeftX  = midLeftX;
+    minLeftY  = midLeftY;
+
+    maxLeftX  = midLeftX;
+    maxLeftY  = midLeftY;
+
+    minRightX = midRightX;
+    minRightY = midRightY;
+
+    maxRightX = midRightX;
+    maxRightY = midRightY;
+
+    calibrationStep = 3;
+
+    delay(500);
+  }
+
+  // ====================================================
+  // STEP 3
+  // RECORD FULL RANGE
+  // ====================================================
+
+  else if(calibrationStep == 3) {
+
+    int var;
+
+    // LEFT X
+    var = readJoystick(leftJoyX, invertLeftX);
+
+    if(var > maxLeftX) maxLeftX = var;
+    if(var < minLeftX) minLeftX = var;
+
+    // LEFT Y
+    var = readJoystick(leftJoyY, invertLeftY);
+
+    if(var > maxLeftY) maxLeftY = var;
+    if(var < minLeftY) minLeftY = var;
+
+    // RIGHT X
+    var = readJoystick(rightJoyX, invertRightX);
+
+    if(var > maxRightX) maxRightX = var;
+    if(var < minRightX) minRightX = var;
+
+    // RIGHT Y
+    var = readJoystick(rightJoyY, invertRightY);
+
+    if(var > maxRightY) maxRightY = var;
+    if(var < minRightY) minRightY = var;
+
+    // Press A to save
+    if(lastButtonState[1]) {
+
+      writeJoystickConfig();
+
+      rebuildLUTs();
+
+      calibrationMode = false;
+      calibrationStep = 1;
+
+      delay(1000);
+    }
+  }
+}
+
+// ======================================================
+// JOYSTICK READ
+// ======================================================
+
+int readJoystick(int joystickPin, boolean invertOutput) {
+
+  int var = analogRead(joystickPin);
+
+  if(invertOutput) {
+    var = 1023 - var;
+  }
+
+  return var;
+}
+
+// ======================================================
+// LUT REBUILD
+// ======================================================
+
+void rebuildLUTs() {
+
+  joystickBuildLUT(
+    leftXLUT,
+    minLeftX,
+    midLeftX,
+    maxLeftX,
+    earlyLeftX,
+    deadBandLeft
+  );
+
+  joystickBuildLUT(
+    leftYLUT,
+    minLeftY,
+    midLeftY,
+    maxLeftY,
+    earlyLeftY,
+    deadBandLeft
+  );
+
+  joystickBuildLUT(
+    rightXLUT,
+    minRightX,
+    midRightX,
+    maxRightX,
+    earlyRightX,
+    deadBandRight
+  );
+
+  joystickBuildLUT(
+    rightYLUT,
+    minRightY,
+    midRightY,
+    maxRightY,
+    earlyRightY,
+    deadBandRight
+  );
+}
+
+// ======================================================
+// LUT BUILD
+// ======================================================
+
+void joystickBuildLUT(
+  byte output[350],
+  int minIn,
+  int midIn,
+  int maxIn,
+  int earlyStop,
+  int deadBand
+) {
+
+  int shiftedMin = 0;
+
+  int shiftedMid = (midIn - minIn) / 2;
+
+  int shiftedMax = (maxIn - minIn) / 2;
+
+  int temp;
+
+  for(int i = 0; i < 350; i++) {
+
+    // LOWER HALF
+    if(i < shiftedMid) {
+
+      if(i > shiftedMin + earlyStop) {
+
+        temp = map(
+          i,
+          shiftedMin,
+          shiftedMid - deadBand,
+          0,
+          127
+        );
+
+      } else {
+
+        temp = 0;
+      }
+
+    }
+
+    // UPPER HALF
+    else {
+
+      if(i < shiftedMax - earlyStop) {
+
+        temp = map(
+          i,
+          shiftedMid + deadBand,
+          shiftedMax,
+          127,
+          254
+        );
+
+      } else {
+
+        temp = 254;
+      }
+    }
+
+    // DEADZONE
+    if(i < shiftedMid + deadBand &&
+       i > shiftedMid - deadBand) {
+
+      temp = 127;
+    }
+
+    output[i] = temp;
+  }
+}
+
+// ======================================================
+// EEPROM HELPERS
 // ======================================================
 
 void writeIntIntoEEPROM(int address, int number) {
@@ -405,12 +713,20 @@ int readIntFromEEPROM(int address) {
   return (byte1 << 8) + byte2;
 }
 
+// ======================================================
+// EEPROM LOAD
+// ======================================================
+
 void eepromLoad() {
 
   if(readIntFromEEPROM(1) != -1) {
     readJoystickConfig();
   }
 }
+
+// ======================================================
+// EEPROM READ
+// ======================================================
 
 void readJoystickConfig() {
 
@@ -431,6 +747,10 @@ void readJoystickConfig() {
   midRightX = readIntFromEEPROM(23);
 }
 
+// ======================================================
+// EEPROM WRITE
+// ======================================================
+
 void writeJoystickConfig() {
 
   writeIntIntoEEPROM(1,  minLeftX);
@@ -448,191 +768,4 @@ void writeJoystickConfig() {
   writeIntIntoEEPROM(19, minRightX);
   writeIntIntoEEPROM(21, maxRightX);
   writeIntIntoEEPROM(23, midRightX);
-}
-
-// ======================================================
-// JOYSTICK READ
-// ======================================================
-
-int readJoystick(int joystickPin, boolean invertOutput) {
-
-  int var = analogRead(joystickPin);
-
-  if(invertOutput) {
-    var = 1023 - var;
-  }
-
-  return var;
-}
-
-// ======================================================
-// LUT BUILD
-// ======================================================
-
-void rebuildLUTs() {
-
-  joystickBuildLUT(leftXLUT,
-                   minLeftX,
-                   midLeftX,
-                   maxLeftX,
-                   earlyLeftX,
-                   deadBandLeft);
-
-  joystickBuildLUT(leftYLUT,
-                   minLeftY,
-                   midLeftY,
-                   maxLeftY,
-                   earlyLeftY,
-                   deadBandLeft);
-
-  joystickBuildLUT(rightXLUT,
-                   minRightX,
-                   midRightX,
-                   maxRightX,
-                   earlyRightX,
-                   deadBandRight);
-
-  joystickBuildLUT(rightYLUT,
-                   minRightY,
-                   midRightY,
-                   maxRightY,
-                   earlyRightY,
-                   deadBandRight);
-}
-
-void joystickBuildLUT(byte output[350],
-                      int minIn,
-                      int midIn,
-                      int maxIn,
-                      int earlyStop,
-                      int deadBand) {
-
-  int shiftedMin = 0;
-  int shiftedMid = (midIn - minIn) / 2;
-  int shiftedMax = (maxIn - minIn) / 2;
-
-  int temp;
-
-  for(int i = 0; i < 350; i++) {
-
-    if(i < shiftedMid) {
-
-      if(i > shiftedMin + earlyStop) {
-
-        temp = map(i,
-                   shiftedMin,
-                   shiftedMid - deadBand,
-                   0,
-                   127);
-
-      } else {
-
-        temp = 0;
-      }
-
-    } else {
-
-      if(i < shiftedMax - earlyStop) {
-
-        temp = map(i,
-                   shiftedMid + deadBand,
-                   shiftedMax,
-                   127,
-                   254);
-
-      } else {
-
-        temp = 254;
-      }
-    }
-
-    if(i < shiftedMid + deadBand &&
-       i > shiftedMid - deadBand) {
-
-      temp = 127;
-    }
-
-    output[i] = temp;
-  }
-}
-
-// ======================================================
-// CALIBRATION
-// ======================================================
-
-void joystickCalibration() {
-
-  buttonRead();
-
-  // Capture center
-  if(calibrationStep == 1) {
-
-    if(lastButtonState[1]) {
-
-      midLeftX  = readJoystick(leftJoyX, invertLeftX);
-      midLeftY  = readJoystick(leftJoyY, invertLeftY);
-
-      midRightX = readJoystick(rightJoyX, invertRightX);
-      midRightY = readJoystick(rightJoyY, invertRightY);
-
-      calibrationStep = 2;
-
-      delay(500);
-    }
-  }
-
-  // Reset min/max
-  else if(calibrationStep == 2) {
-
-    minLeftX  = midLeftX;
-    minLeftY  = midLeftY;
-
-    maxLeftX  = 0;
-    maxLeftY  = 0;
-
-    minRightX = midRightX;
-    minRightY = midRightY;
-
-    maxRightX = 0;
-    maxRightY = 0;
-
-    calibrationStep = 3;
-
-    delay(500);
-  }
-
-  // Record full range
-  else if(calibrationStep == 3) {
-
-    int var;
-
-    var = readJoystick(leftJoyX, invertLeftX);
-    if(var > maxLeftX) maxLeftX = var;
-    if(var < minLeftX) minLeftX = var;
-
-    var = readJoystick(leftJoyY, invertLeftY);
-    if(var > maxLeftY) maxLeftY = var;
-    if(var < minLeftY) minLeftY = var;
-
-    var = readJoystick(rightJoyX, invertRightX);
-    if(var > maxRightX) maxRightX = var;
-    if(var < minRightX) minRightX = var;
-
-    var = readJoystick(rightJoyY, invertRightY);
-    if(var > maxRightY) maxRightY = var;
-    if(var < minRightY) minRightY = var;
-
-    // Save calibration
-    if(lastButtonState[1]) {
-
-      writeJoystickConfig();
-
-      rebuildLUTs();
-
-      calibrationStep = 1;
-      calibrationMode = false;
-
-      delay(1000);
-    }
-  }
 }
